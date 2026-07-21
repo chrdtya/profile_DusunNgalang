@@ -1,4 +1,6 @@
+import { Compass, ExternalLink } from 'lucide-react'
 import { dataGeografis } from '../data/siteData'
+import Reveal from '../components/motion/Reveal'
 
 const mapsLink = 'https://maps.app.goo.gl/U3zdYyREFooRqvYNA?g_st=ic'
 const mapsEmbedLink =
@@ -7,17 +9,18 @@ const mapsEmbedLink =
 export default function SectionLokasi() {
   return (
     <section className="geo-demo" id="lokasi">
-      <div className="section-header geo-head">
+      <Reveal className="section-header geo-head">
+        <span className="section-kicker">Kunjungi Kami</span>
         <h2>Data Geografis dan Lokasi</h2>
         <p>
           Ringkasan profil wilayah Dusun Ngalang untuk memudahkan perencanaan
           kunjungan dan orientasi lokasi bagi pengunjung.
         </p>
-      </div>
+      </Reveal>
 
       <div className="geo-layout">
-        <article className="info-box">
-          <h3>Profil Geografis</h3>
+        <Reveal className="info-box" y={20}>
+          <h3><Compass size={18} /> Profil Geografis</h3>
           <ul className="detail-list">
             {dataGeografis.map((item) => (
               <li key={item.label}>
@@ -26,36 +29,36 @@ export default function SectionLokasi() {
               </li>
             ))}
           </ul>
-        </article>
-      </div>
+        </Reveal>
 
-      <article className="map-box">
-        <div className="map-head">
-          <h3>Peta Lokasi Dusun Ngalang</h3>
-          <a
-            className="btn btn-primary map-link"
-            href={mapsLink}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Buka Rute di Google Maps
-          </a>
-        </div>
-        <p>
-          Gunakan titik Balai Desa Ngalang sebagai orientasi awal kunjungan.
-          Setelah peta terbuka, aktifkan navigasi untuk mendapatkan rute tercepat
-          dari lokasi Anda.
-        </p>
-        <div className="map-frame-wrap">
-          <iframe
-            title="Peta Balai Desa Ngalang"
-            src={mapsEmbedLink}
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            allowFullScreen
-          ></iframe>
-        </div>
-      </article>
+        <Reveal className="map-box" y={20} delay={0.1}>
+          <div className="map-head">
+            <h3>Peta Lokasi Dusun Ngalang</h3>
+            <a
+              className="btn btn-primary map-link"
+              href={mapsLink}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Buka Rute di Google Maps <ExternalLink size={14} />
+            </a>
+          </div>
+          <p>
+            Gunakan titik Balai Desa Ngalang sebagai orientasi awal kunjungan.
+            Setelah peta terbuka, aktifkan navigasi untuk mendapatkan rute tercepat
+            dari lokasi Anda.
+          </p>
+          <div className="map-frame-wrap">
+            <iframe
+              title="Peta Balai Desa Ngalang"
+              src={mapsEmbedLink}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            ></iframe>
+          </div>
+        </Reveal>
+      </div>
     </section>
   )
 }

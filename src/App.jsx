@@ -1,25 +1,86 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
+import { motion } from 'framer-motion'
+import {
+  Leaf,
+  LogIn,
+  Menu,
+  X,
+  ArrowRight,
+  MapPin,
+  Store,
+  Camera,
+  Users,
+  MessageCircle,
+} from 'lucide-react'
 import './App.css'
+import Reveal from './components/motion/Reveal'
 import SectionTentang from './sections/SectionTentang'
 import SectionUmkm from './sections/SectionUmkm'
 import SectionAcara from './sections/SectionAcara'
 import SectionBerita from './sections/SectionBerita'
 import SectionGaleri from './sections/SectionGaleri'
 import SectionLokasi from './sections/SectionLokasi'
+import { useSanityData } from './hooks/useSanityData'
+import { getDaftarUmkm, getDaftarAcara, getDaftarBerita } from './lib/sanityClient'
+import { daftarUmkm, daftarAcara, daftarBerita } from './data/siteData'
 
-// Daftar nav links + id section yang terkait
+// Daftar nav links + id section yang terkait — urutan mengikuti urutan section di halaman
 const navLinks = [
   { label: 'Beranda', href: '#beranda' },
+  { label: 'Tentang', href: '#tentang-dusun' },
   { label: 'UMKM', href: '#umkm' },
   { label: 'Acara', href: '#acara' },
-  { label: 'Lokasi', href: '#lokasi' },
   { label: 'Berita', href: '#berita' },
   { label: 'Galeri', href: '#galeri' },
-  { label: 'Tentang', href: '#tentang-dusun' },
+  { label: 'Lokasi', href: '#lokasi' },
 ]
 
+const heroImage =
+  'https://images.unsplash.com/photo-1576076983530-d45f9c5b60b2?auto=format&fit=crop&w=1400&q=80'
+
+// Admin panel (termasuk recharts & sanity write proxy) di-lazy-load agar bundle publik tetap ringan
+const AdminPanel = lazy(() => import('./components/AdminPanel'))
+
 function App() {
-  const [activeHash, setActiveHash] = useState('#beranda')
+  const [activeHash, setActiveHash] = useState(window.location.hash || '#beranda')
+  const [isAdminPage, setIsAdminPage] = useState(window.location.hash === '#admin')
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  const umkmList = useSanityData(getDaftarUmkm, daftarUmkm)
+  const acaraList = useSanityData(getDaftarAcara, daftarAcara)
+  const beritaList = useSanityData(getDaftarBerita, daftarBerita)
+
+  // Check if accessing admin page
+  useEffect(() => {
+    const handleHashChange = () => {
+      const currentHash = window.location.hash
+      setIsAdminPage(currentHash === '#admin')
+      if (!currentHash.includes('admin')) {
+        setActiveHash(currentHash || '#beranda')
+      }
+    }
+
+    window.addEventListener('hashchange', handleHashChange)
+    return () => window.removeEventListener('hashchange', handleHashChange)
+  }, [])
+
+  // Tutup menu mobile setiap kali ukuran layar kembali ke desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 860) setIsMenuOpen(false)
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  // Navbar berubah dari transparan (di atas hero) menjadi solid + blur saat discroll
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 24)
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   useEffect(() => {
     // Kumpulkan semua section yang punya id sesuai nav
@@ -50,47 +111,159 @@ function App() {
     return () => observer.disconnect()
   }, [])
 
+  // Render admin panel if accessing admin page
+  if (isAdminPage) {
+    return (
+      <Suspense fallback={<div className="admin-loading-fallback">Memuat Admin Panel…</div>}>
+        <AdminPanel />
+      </Suspense>
+    )
+  }
+
   return (
     <div className="page-shell">
 
       {/* ── NAVBAR ── */}
-      <header className="topbar">
-        <div className="brand-wrap">
-          <div className="brand-mark" aria-hidden="true">DN</div>
-          <p className="brand-name">Dusun Ngalang</p>
+      <header className={`topbar${scrolled ? ' scrolled' : ''}${isMenuOpen ? ' menu-open' : ''}`}>
+        <div className="topbar-inner">
+          <a
+            className="brand-wrap"
+            href="#beranda"
+            onClick={() => {
+              setActiveHash('#beranda')
+              setIsMenuOpen(false)
+            }}
+          >
+            <div className="brand-mark" aria-hidden="true">
+              <Leaf size={17} strokeWidth={2.4} />
+            </div>
+            <p className="brand-name">Dusun Ngalang</p>
+          </a>
+
+          <nav className="main-nav" aria-label="Menu utama">
+            <ul className={`menu-list${isMenuOpen ? ' open' : ''}`}>
+              {navLinks.map((link) => {
+                const isActive = activeHash === link.href
+                return (
+                  <li key={link.href}>
+                    <a
+                      className={`menu-item${isActive ? ' active' : ''}`}
+                      href={link.href}
+                      onClick={() => {
+                        setActiveHash(link.href)
+                        setIsMenuOpen(false)
+                      }}
+                    >
+                      {link.label}
+                      {isActive && (
+                        <motion.span
+                          className="menu-underline"
+                          layoutId="nav-underline"
+                          aria-hidden="true"
+                          transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                        />
+                      )}
+                    </a>
+                  </li>
+                )
+              })}
+            </ul>
+          </nav>
+
+          <div className="topbar-actions">
+            <a className="btn-login" href="#admin" title="Admin Panel">
+              <LogIn size={16} strokeWidth={2.4} />
+              <span>Login</span>
+            </a>
+            <button
+              className={`menu-toggle${isMenuOpen ? ' open' : ''}`}
+              aria-label={isMenuOpen ? 'Tutup menu navigasi' : 'Buka menu navigasi'}
+              aria-expanded={isMenuOpen}
+              onClick={() => setIsMenuOpen((open) => !open)}
+            >
+              {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
         </div>
-        <nav aria-label="Menu utama">
-          <ul className="menu-list">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <a
-                  className={`menu-item${activeHash === link.href ? ' active' : ''}`}
-                  href={link.href}
-                  onClick={() => setActiveHash(link.href)}
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
       </header>
 
       <main>
 
         {/* ── HERO ── */}
         <section className="hero-section" id="beranda">
-          <div className="hero-overlay"></div>
-          <div className="hero-content">
-            <h1>Selamat Datang di Dusun Ngalang</h1>
-            <p className="hero-subtitle">
-              Portal informasi UMKM, acara tradisional, serta kegiatan masyarakat
-              yang dirancang sederhana dan mudah diakses.
-            </p>
-            <div className="hero-actions">
-              <a className="btn btn-primary" href="#umkm">Jelajahi UMKM</a>
-              <a className="btn btn-ghost" href="#acara">Lihat Acara</a>
-            </div>
+          <div className="hero-blob hero-blob-a" aria-hidden="true"></div>
+          <div className="hero-blob hero-blob-b" aria-hidden="true"></div>
+          <div className="hero-pattern" aria-hidden="true"></div>
+
+          <div className="hero-inner">
+            <Reveal className="hero-copy">
+              <span className="hero-kicker">
+                <Leaf size={14} /> Portal Informasi Resmi
+              </span>
+              <h1>
+                Menyapa Dunia dari <span className="hero-highlight">Dusun Ngalang</span>
+              </h1>
+              <p className="hero-subtitle">
+                Portal informasi UMKM, acara tradisional, serta kegiatan masyarakat
+                Dusun Ngalang — dirancang sederhana, modern, dan mudah diakses siapa saja.
+              </p>
+              <div className="hero-actions">
+                <a className="btn btn-primary" href="#umkm">
+                  Jelajahi UMKM <ArrowRight size={16} />
+                </a>
+                <a className="btn btn-ghost" href="#acara">
+                  Lihat Acara
+                </a>
+              </div>
+              <div className="hero-stats">
+                <div className="hero-stat">
+                  <strong>{umkmList.length}+</strong>
+                  <span>UMKM Terdaftar</span>
+                </div>
+                <div className="hero-stat">
+                  <strong>{acaraList.length}+</strong>
+                  <span>Acara &amp; Tradisi</span>
+                </div>
+                <div className="hero-stat">
+                  <strong>{beritaList.length}+</strong>
+                  <span>Berita Terbit</span>
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal className="hero-visual" delay={0.15} y={40}>
+              <div className="hero-photo-frame">
+                <img src={heroImage} alt="Panorama pedesaan Dusun Ngalang" loading="eager" />
+              </div>
+              <motion.div
+                className="hero-float-card hero-float-card-a"
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+              >
+                <span className="hero-float-icon">
+                  <MapPin size={16} />
+                </span>
+                <div>
+                  <strong>Balai Desa Ngalang</strong>
+                  <span>Gedangsari, Gunungkidul</span>
+                </div>
+              </motion.div>
+              <motion.div
+                className="hero-float-card hero-float-card-b"
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.7 }}
+              >
+                <span className="hero-float-icon">
+                  <Store size={16} />
+                </span>
+                <div>
+                  <strong>{umkmList.length}+ UMKM Aktif</strong>
+                  <span>Kuliner, kerajinan &amp; lainnya</span>
+                </div>
+              </motion.div>
+            </Reveal>
           </div>
         </section>
 
@@ -104,7 +277,8 @@ function App() {
 
         {/* ── CTA ── */}
         <section className="cta-section">
-          <div className="cta-box">
+          <Reveal className="cta-box" y={22}>
+            <div className="cta-pattern" aria-hidden="true"></div>
             <div className="cta-text">
               <h2>Daftarkan UMKM Anda</h2>
               <p>
@@ -113,22 +287,28 @@ function App() {
               </p>
             </div>
             <div className="cta-actions">
-              <a className="btn btn-primary" href="#umkm">Daftar Sekarang</a>
-              <a className="btn btn-ghost" href="#tentang-dusun">Pelajari Lebih</a>
+              <a className="btn btn-cta" href="#umkm">
+                Daftar Sekarang <ArrowRight size={16} />
+              </a>
+              <a className="btn btn-ghost-dark" href="#tentang-dusun">
+                Pelajari Lebih
+              </a>
             </div>
-          </div>
+          </Reveal>
         </section>
 
       </main>
 
       {/* ── FOOTER ── */}
       <footer className="site-footer">
-        <div className="footer-grid">
+        <Reveal className="footer-grid" y={20}>
 
           {/* Brand & deskripsi */}
           <div className="footer-brand">
-            <div className="brand-wrap">
-              <div className="brand-mark" aria-hidden="true">DN</div>
+            <div className="brand-wrap footer-brand-wrap">
+              <div className="brand-mark" aria-hidden="true">
+                <Leaf size={17} strokeWidth={2.4} />
+              </div>
               <p className="brand-name">Dusun Ngalang</p>
             </div>
             <p className="footer-desc">
@@ -141,12 +321,11 @@ function App() {
           <div className="footer-col">
             <h4>Halaman</h4>
             <ul className="footer-links">
-              <li><a href="#beranda">Beranda</a></li>
-              <li><a href="#umkm">UMKM</a></li>
-              <li><a href="#acara">Acara</a></li>
-              <li><a href="#lokasi">Lokasi</a></li>
-              <li><a href="#berita">Berita</a></li>
-              <li><a href="#galeri">Galeri</a></li>
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <a href={link.href}>{link.label}</a>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -161,7 +340,24 @@ function App() {
             </div>
           </div>
 
-        </div>
+          {/* Sosial media — belum tersedia, tombol non-aktif agar tidak mengarah ke tautan palsu */}
+          <div className="footer-col">
+            <h4>Ikuti Kami</h4>
+            <div className="footer-social">
+              <button type="button" className="footer-social-btn" disabled title="Segera hadir">
+                <Camera size={17} />
+              </button>
+              <button type="button" className="footer-social-btn" disabled title="Segera hadir">
+                <Users size={17} />
+              </button>
+              <button type="button" className="footer-social-btn" disabled title="Segera hadir">
+                <MessageCircle size={17} />
+              </button>
+            </div>
+            <p className="footer-social-note">Kanal media sosial resmi segera hadir</p>
+          </div>
+
+        </Reveal>
         <div className="footer-bottom">
           <p>© 2026 Dusun Ngalang. Hak cipta dilindungi.</p>
           <p>Dibangun untuk kemajuan dusun</p>

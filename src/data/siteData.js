@@ -32,7 +32,6 @@ export const daftarUmkm = [
     description:
       'Menyediakan berbagai menu masakan tradisional Jawa yang lezat dan terjangkau.',
     address: 'Jl. Raya Ngalang No. 12',
-    phone: '0812-3456-7890',
   },
   {
     name: 'Kerajinan Bambu Pak Hadi',
@@ -42,7 +41,6 @@ export const daftarUmkm = [
     description:
       'Produsen dan penjual berbagai kerajinan bambu berkualitas tinggi untuk kebutuhan rumah tangga.',
     address: 'Jl. Ngalang Timur No. 5',
-    phone: '0813-4567-8901',
   },
   {
     name: 'Batik Ngalang',
@@ -52,7 +50,6 @@ export const daftarUmkm = [
     description:
       'Toko batik dengan motif khas Ngalang, tersedia batik tulis dan batik cap untuk souvenir.',
     address: 'Jl. Pasar Ngalang No. 8',
-    phone: '0814-5678-9012',
   },
 ]
 
@@ -112,18 +109,30 @@ export const daftarBerita = [
   {
     title: 'Persiapan Rasulan 2026 Mulai Dilakukan Warga',
     date: '05 Juni 2026',
+    kategori: 'Kegiatan',
+    penulis: 'Tim Dusun Ngalang',
+    image:
+      'https://images.unsplash.com/photo-1464207687429-7505649dae38?auto=format&fit=crop&w=900&q=80',
     excerpt:
       'Warga Dusun Ngalang memulai kerja bakti lintas RT untuk menyiapkan lokasi, konsumsi, serta rangkaian kegiatan budaya.',
   },
   {
     title: 'Pelatihan Branding Produk UMKM Desa',
     date: '29 Mei 2026',
+    kategori: 'UMKM',
+    penulis: 'Tim Dusun Ngalang',
+    image:
+      'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80',
     excerpt:
       'Pendampingan pemasaran digital diikuti pelaku usaha lokal agar produk Dusun Ngalang lebih dikenal luas.',
   },
   {
     title: 'Jalur Kunjungan ke Balai Desa Diperbarui',
     date: '18 Mei 2026',
+    kategori: 'Pengumuman',
+    penulis: 'Tim Dusun Ngalang',
+    image:
+      'https://images.unsplash.com/photo-1576076983530-d45f9c5b60b2?auto=format&fit=crop&w=900&q=80',
     excerpt:
       'Pemerintah desa memperbarui informasi rute dan titik parkir untuk memudahkan tamu yang berkunjung.',
   },
@@ -135,31 +144,37 @@ export const daftarGaleri = [
     image:
       'https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?auto=format&fit=crop&w=1200&q=80',
     caption: 'Hamparan sawah saat musim tanam',
+    category: 'Alam',
   },
   {
     image:
       'https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=1200&q=80',
     caption: 'Perbukitan karst di sekitar Ngalang',
+    category: 'Alam',
   },
   {
     image:
-      'https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba?auto=format&fit=crop&w=1200&q=80',
-    caption: 'Kegiatan warga dalam acara budaya',
+      'https://images.unsplash.com/photo-1499529112087-3cb3b73cec95?auto=format&fit=crop&w=1200&q=80',
+    caption: 'Ladang gandum keemasan di pinggiran dusun',
+    category: 'Alam',
   },
   {
     image:
       'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80',
     caption: 'Produk UMKM unggulan dusun',
+    category: 'UMKM',
   },
   {
     image:
       'https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=1200&q=80',
-    caption: 'Panorama pedesaan saat pagi hari',
+    caption: 'Hasil panen sayuran segar warga dusun',
+    category: 'Alam',
   },
   {
     image:
       'https://images.unsplash.com/photo-1464207687429-7505649dae38?auto=format&fit=crop&w=1200&q=80',
     caption: 'Suasana gotong royong masyarakat',
+    category: 'Kegiatan',
   },
 ]
 
