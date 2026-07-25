@@ -6,11 +6,11 @@ import { createClient } from '@sanity/client'
 dotenv.config({ path: '.env.local' })
 
 const app = express()
-const port = process.env.PORT || 5175
+const port = process.env.PORT || 5176
 
 app.use(bodyParser.json())
 
-const projectId = process.env.VITE_SANITY_PROJECT_ID
+const projectId = process.env.VITE_SANITY_PROJECT_ID || 'vko2u6kf'
 const dataset = process.env.VITE_SANITY_DATASET || 'production'
 const apiVersion = process.env.VITE_SANITY_API_VERSION || '2024-01-15'
 const token = process.env.SANITY_WRITE_TOKEN || process.env.VITE_SANITY_TOKEN

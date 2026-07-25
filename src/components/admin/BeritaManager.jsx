@@ -204,10 +204,10 @@ export default function BeritaManager({ searchQuery = '' }) {
             <label>Kategori</label>
             <select name="kategori" value={formData.kategori} onChange={handleInputChange}>
               <option value="">Pilih Kategori</option>
-              <option value="Kegiatan">📅 Kegiatan</option>
-              <option value="Pengumuman">📢 Pengumuman</option>
-              <option value="UMKM">🏪 UMKM</option>
-              <option value="Budaya">🎭 Budaya</option>
+              <option value="Kegiatan">Kegiatan</option>
+              <option value="Pengumuman">Pengumuman</option>
+              <option value="UMKM">UMKM</option>
+              <option value="Budaya">Budaya</option>
             </select>
           </div>
 
@@ -221,7 +221,7 @@ export default function BeritaManager({ searchQuery = '' }) {
 
           <div className="form-actions">
             <button type="submit" className="btn-primary" disabled={loading}>
-              {editing ? '💾 Update Berita' : '💾 Simpan Berita'}
+              {editing ? 'Update Berita' : 'Simpan Berita'}
             </button>
             <button type="button" className="btn-secondary" onClick={handleCancel}>
               Batal
@@ -246,7 +246,7 @@ export default function BeritaManager({ searchQuery = '' }) {
               <div className="item-content">
                 <h3>{item.judul}</h3>
                 <p className="meta">
-                  📅 {new Date(item.tanggalPublikasi).toLocaleDateString('id-ID')}
+                  {new Date(item.tanggalPublikasi).toLocaleDateString('id-ID')}
                   {item.penulis && ` • Penulis: ${item.penulis}`}
                 </p>
                 <p className="konten-preview">{item.konten.substring(0, 150)}...</p>
@@ -257,14 +257,14 @@ export default function BeritaManager({ searchQuery = '' }) {
                   onClick={() => handleEdit(item)}
                   disabled={loading}
                 >
-                  ✏️ Edit
+                  Edit
                 </button>
                 <button
                   className="btn-delete"
                   onClick={() => handleDelete(item._id)}
                   disabled={loading}
                 >
-                  🗑️ Hapus
+                  Hapus
                 </button>
               </div>
             </div>

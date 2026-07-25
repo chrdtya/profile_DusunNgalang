@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { Leaf, Lock, Eye, EyeOff, LogIn } from 'lucide-react'
 import '../styles/AdminPanel.css'
 import AdminLayout from './admin/AdminLayout'
 import DashboardHome from './admin/DashboardHome'
@@ -58,7 +57,7 @@ export default function AdminPanel() {
           <div className="admin-login-visual-overlay"></div>
           <div className="admin-login-visual-content">
             <div className="admin-brand-mark admin-brand-mark-lg">
-              <Leaf size={20} strokeWidth={2.4} />
+              DN
             </div>
             <p className="admin-login-quote">
               "Portal digital yang menghubungkan warga, UMKM, dan pengunjung
@@ -71,7 +70,7 @@ export default function AdminPanel() {
         <div className="admin-login-form-side">
           <div className="admin-login-card">
             <div className="admin-brand-mark admin-login-icon">
-              <Lock size={20} strokeWidth={2.4} />
+                DN
             </div>
             <h1>Selamat Datang Kembali</h1>
             <p>Masuk untuk mengelola konten Dusun Ngalang</p>
@@ -96,7 +95,7 @@ export default function AdminPanel() {
                   onClick={() => setShowPassword((s) => !s)}
                   aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
                 >
-                  {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
+                  {showPassword ? 'Hide' : 'Show'}
                 </button>
               </div>
               {loginError && <p className="admin-login-error">Password salah, silakan coba lagi.</p>}
@@ -116,7 +115,7 @@ export default function AdminPanel() {
               </div>
 
               <button onClick={handleLogin} className="admin-login-btn">
-                <LogIn size={17} /> Masuk
+                Masuk
               </button>
             </div>
           </div>

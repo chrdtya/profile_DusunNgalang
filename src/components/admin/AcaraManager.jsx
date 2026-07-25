@@ -169,11 +169,11 @@ export default function AcaraManager({ searchQuery = '' }) {
               required
             >
               <option value="">Pilih Kategori</option>
-              <option value="Tradisi">📜 Tradisi</option>
-              <option value="Sosial">🤝 Sosial</option>
-              <option value="Nasional">🇮🇩 Nasional</option>
-              <option value="Olahraga">⚽ Olahraga</option>
-              <option value="Budaya">🎭 Budaya</option>
+              <option value="Tradisi">Tradisi</option>
+              <option value="Sosial">Sosial</option>
+              <option value="Nasional">Nasional</option>
+              <option value="Olahraga">Olahraga</option>
+              <option value="Budaya">Budaya</option>
             </select>
           </div>
 
@@ -224,7 +224,7 @@ export default function AcaraManager({ searchQuery = '' }) {
 
           <div className="form-actions">
             <button type="submit" className="btn-primary" disabled={loading}>
-              {editing ? '💾 Update Acara' : '💾 Simpan Acara'}
+              {editing ? 'Update Acara' : 'Simpan Acara'}
             </button>
             <button type="button" className="btn-secondary" onClick={handleCancel}>
               Batal
@@ -247,10 +247,10 @@ export default function AcaraManager({ searchQuery = '' }) {
                 <h3>{item.judul}</h3>
                 <p className="category">{item.kategori}</p>
                 <p>
-                  <strong>📅 Tanggal:</strong> {new Date(item.tanggal).toLocaleDateString('id-ID')}
+                  <strong>Tanggal:</strong> {new Date(item.tanggal).toLocaleDateString('id-ID')}
                 </p>
                 <p>
-                  <strong>📍 Lokasi:</strong> {item.lokasi}
+                  <strong>Lokasi:</strong> {item.lokasi}
                 </p>
                 <p className="description">{item.deskripsi}</p>
                 {item.kegiatan && item.kegiatan.length > 0 && (
@@ -270,14 +270,14 @@ export default function AcaraManager({ searchQuery = '' }) {
                   onClick={() => handleEdit(item)}
                   disabled={loading}
                 >
-                  ✏️ Edit
+                  Edit
                 </button>
                 <button
                   className="btn-delete"
                   onClick={() => handleDelete(item._id)}
                   disabled={loading}
                 >
-                  🗑️ Hapus
+                  Hapus
                 </button>
               </div>
             </div>

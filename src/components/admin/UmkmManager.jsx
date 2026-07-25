@@ -148,7 +148,7 @@ export default function UmkmManager({ searchQuery = '' }) {
           onClick={() => setShowForm(!showForm)}
           disabled={loading}
         >
-          {showForm ? '✕ Batal' : '+ Tambah UMKM'}
+          {showForm ? 'Batal' : 'Tambah UMKM'}
         </button>
       </div>
 
@@ -175,12 +175,13 @@ export default function UmkmManager({ searchQuery = '' }) {
               required
             >
               <option value="">Pilih Kategori</option>
-              <option value="Kuliner">🍽️ Kuliner</option>
-              <option value="Kerajinan">🎨 Kerajinan</option>
-              <option value="Fashion">👔 Fashion</option>
-              <option value="Pertanian">🌾 Pertanian</option>
-              <option value="Jasa">🛠️ Jasa</option>
-              <option value="Lainnya">📦 Lainnya</option>
+              <option value="Kuliner">Kuliner</option>
+              <option value="Kerajinan">Kerajinan</option>
+              <option value="Fashion">Fashion</option>
+              <option value="Pertanian">Pertanian</option>
+              <option value="Peternakan">Peternakan</option>
+              <option value="Jasa">Jasa</option>
+              <option value="Lainnya">Lainnya</option>
             </select>
           </div>
 
@@ -232,7 +233,7 @@ export default function UmkmManager({ searchQuery = '' }) {
 
           <div className="form-actions">
             <button type="submit" className="btn-primary" disabled={loading}>
-              {editing ? '💾 Update UMKM' : '💾 Simpan UMKM'}
+              {editing ? 'Update UMKM' : 'Simpan UMKM'}
             </button>
             <button type="button" className="btn-secondary" onClick={handleCancel}>
               Batal
@@ -258,7 +259,7 @@ export default function UmkmManager({ searchQuery = '' }) {
                 <h3>{item.name}</h3>
                 <p className="category">{item.category}</p>
                 <p className="description">{item.description}</p>
-                {item.address && <p className="address">📍 {item.address}</p>}
+                {item.address && <p className="address">{item.address}</p>}
               </div>
               <div className="item-actions">
                 <button
@@ -266,14 +267,14 @@ export default function UmkmManager({ searchQuery = '' }) {
                   onClick={() => handleEdit(item)}
                   disabled={loading}
                 >
-                  ✏️ Edit
+                  Edit
                 </button>
                 <button
                   className="btn-delete"
                   onClick={() => handleDelete(item._id)}
                   disabled={loading}
                 >
-                  🗑️ Hapus
+                  Hapus
                 </button>
               </div>
             </div>

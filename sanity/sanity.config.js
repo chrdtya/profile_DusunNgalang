@@ -3,7 +3,7 @@ import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './schemaTypes'
 
-const projectId = import.meta.env.VITE_SANITY_PROJECT_ID || 'your_project_id'
+const projectId = import.meta.env.VITE_SANITY_PROJECT_ID || 'vko2u6kf'
 const dataset = import.meta.env.VITE_SANITY_DATASET || 'production'
 
 export default defineConfig({

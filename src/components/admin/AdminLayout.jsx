@@ -1,27 +1,12 @@
 import { useEffect, useState } from 'react'
-import {
-  LayoutDashboard,
-  Store,
-  CalendarDays,
-  Newspaper,
-  Images,
-  BookOpen,
-  LogOut,
-  Search,
-  Moon,
-  Sun,
-  Menu,
-  X,
-  Leaf,
-} from 'lucide-react'
-
+import { Moon, Sun } from 'lucide-react'
 const navItems = [
-  { key: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { key: 'umkm', label: 'UMKM', icon: Store },
-  { key: 'acara', label: 'Acara', icon: CalendarDays },
-  { key: 'berita', label: 'Berita', icon: Newspaper },
-  { key: 'galeri', label: 'Galeri', icon: Images },
-  { key: 'tentang', label: 'Tentang Dusun', icon: BookOpen },
+  { key: 'dashboard', label: 'Dashboard' },
+  { key: 'umkm', label: 'UMKM' },
+  { key: 'acara', label: 'Acara' },
+  { key: 'berita', label: 'Berita' },
+  { key: 'galeri', label: 'Galeri' },
+  { key: 'tentang', label: 'Tentang Dusun' },
 ]
 
 export default function AdminLayout({
@@ -48,7 +33,7 @@ export default function AdminLayout({
       <aside className={`admin-sidebar${sidebarOpen ? ' open' : ''}`}>
         <div className="admin-sidebar-brand">
           <div className="admin-brand-mark">
-            <Leaf size={17} strokeWidth={2.4} />
+            DN
           </div>
           <span>Dusun Ngalang</span>
           <button
@@ -56,31 +41,26 @@ export default function AdminLayout({
             onClick={() => setSidebarOpen(false)}
             aria-label="Tutup sidebar"
           >
-            <X size={18} />
+            Tutup
           </button>
         </div>
 
         <nav className="admin-sidebar-nav">
-          {navItems.map((item) => {
-            const Icon = item.icon
-            return (
-              <button
-                key={item.key}
-                className={`admin-nav-item${activeTab === item.key ? ' active' : ''}`}
-                onClick={() => {
-                  onTabChange(item.key)
-                  setSidebarOpen(false)
-                }}
-              >
-                <Icon size={18} />
-                <span>{item.label}</span>
-              </button>
-            )
-          })}
+          {navItems.map((item) => (
+            <button
+              key={item.key}
+              className={`admin-nav-item${activeTab === item.key ? ' active' : ''}`}
+              onClick={() => {
+                onTabChange(item.key)
+                setSidebarOpen(false)
+              }}
+            >
+              <span>{item.label}</span>
+            </button>
+          ))}
         </nav>
 
         <button className="admin-nav-item admin-logout" onClick={onLogout}>
-          <LogOut size={18} />
           <span>Logout</span>
         </button>
       </aside>
@@ -100,7 +80,7 @@ export default function AdminLayout({
             onClick={() => setSidebarOpen(true)}
             aria-label="Buka sidebar"
           >
-            <Menu size={20} />
+            Menu
           </button>
 
           <div className="admin-topbar-title">
@@ -108,7 +88,6 @@ export default function AdminLayout({
           </div>
 
           <div className="admin-search">
-            <Search size={16} />
             <input
               type="search"
               placeholder="Cari..."

@@ -151,10 +151,10 @@ export default function GaleriManager({ searchQuery = '' }) {
             <label>Kategori</label>
             <select name="category" value={formData.category} onChange={handleInputChange}>
               <option value="">Pilih Kategori</option>
-              <option value="Alam">🌿 Alam</option>
-              <option value="Budaya">🎭 Budaya</option>
-              <option value="UMKM">🏪 UMKM</option>
-              <option value="Kegiatan">🤝 Kegiatan</option>
+              <option value="Alam">Alam</option>
+              <option value="Budaya">Budaya</option>
+              <option value="UMKM">UMKM</option>
+              <option value="Kegiatan">Kegiatan</option>
             </select>
           </div>
 
@@ -168,7 +168,7 @@ export default function GaleriManager({ searchQuery = '' }) {
 
           <div className="form-actions">
             <button type="submit" className="btn-primary" disabled={loading}>
-              💾 Simpan Foto
+              Simpan Foto
             </button>
             <button type="button" className="btn-secondary" onClick={handleCancel}>
               Batal
@@ -196,7 +196,7 @@ export default function GaleriManager({ searchQuery = '' }) {
                   onClick={() => handleDelete(item._id)}
                   disabled={loading}
                 >
-                  🗑️ Hapus
+                  Hapus
                 </button>
               </div>
             </div>

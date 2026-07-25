@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
-import { Store, CalendarDays, Newspaper, Images, Plus, Clock } from 'lucide-react'
 import {
   getDaftarUmkm,
   getDaftarAcara,
@@ -40,10 +39,10 @@ export default function DashboardHome({ onNavigate }) {
   }, [])
 
   const stats = [
-    { key: 'umkm', label: 'Jumlah UMKM', icon: Store, count: data.umkm.length },
-    { key: 'acara', label: 'Jumlah Acara', icon: CalendarDays, count: data.acara.length },
-    { key: 'berita', label: 'Jumlah Berita', icon: Newspaper, count: data.berita.length },
-    { key: 'galeri', label: 'Jumlah Foto Galeri', icon: Images, count: data.galeri.length },
+    { key: 'umkm', label: 'Jumlah UMKM', count: data.umkm.length },
+    { key: 'acara', label: 'Jumlah Acara', count: data.acara.length },
+    { key: 'berita', label: 'Jumlah Berita', count: data.berita.length },
+    { key: 'galeri', label: 'Jumlah Foto Galeri', count: data.galeri.length },
   ]
 
   const chartData = Object.entries(
@@ -81,24 +80,18 @@ export default function DashboardHome({ onNavigate }) {
   return (
     <div className="dashboard-home">
       <div className="dashboard-stats">
-        {stats.map((stat) => {
-          const Icon = stat.icon
-          return (
-            <button
-              key={stat.key}
-              className="stat-card"
-              onClick={() => onNavigate(stat.key)}
-            >
-              <div className="stat-card-icon">
-                <Icon size={20} />
-              </div>
-              <div>
-                <strong>{stat.count}</strong>
-                <span>{stat.label}</span>
-              </div>
-            </button>
-          )
-        })}
+        {stats.map((stat) => (
+          <button
+            key={stat.key}
+            className="stat-card"
+            onClick={() => onNavigate(stat.key)}
+          >
+            <div>
+              <strong>{stat.count}</strong>
+              <span>{stat.label}</span>
+            </div>
+          </button>
+        ))}
       </div>
 
       <div className="dashboard-grid">
@@ -127,7 +120,7 @@ export default function DashboardHome({ onNavigate }) {
         </div>
 
         <div className="dashboard-panel">
-          <h3><Clock size={16} /> Aktivitas Terbaru</h3>
+          <h3>Aktivitas Terbaru</h3>
           {activity.length > 0 ? (
             <ul className="activity-feed">
               {activity.map((entry, i) => {
@@ -157,16 +150,16 @@ export default function DashboardHome({ onNavigate }) {
         <h3>Aksi Cepat</h3>
         <div className="quick-actions">
           <button className="quick-action-btn" onClick={() => onNavigate('umkm')}>
-            <Plus size={16} /> Tambah UMKM
+            Tambah UMKM
           </button>
           <button className="quick-action-btn" onClick={() => onNavigate('acara')}>
-            <Plus size={16} /> Tambah Acara
+            Tambah Acara
           </button>
           <button className="quick-action-btn" onClick={() => onNavigate('berita')}>
-            <Plus size={16} /> Tambah Berita
+            Tambah Berita
           </button>
           <button className="quick-action-btn" onClick={() => onNavigate('galeri')}>
-            <Plus size={16} /> Tambah Foto
+            Tambah Foto
           </button>
         </div>
       </div>

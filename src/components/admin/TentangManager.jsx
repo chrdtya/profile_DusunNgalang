@@ -151,7 +151,7 @@ export default function TentangManager({ searchQuery = '' }) {
 
           <div className="form-actions">
             <button type="submit" className="btn-primary" disabled={loading}>
-              {editing ? '💾 Update' : '💾 Simpan'}
+              {editing ? 'Update' : 'Simpan'}
             </button>
             <button type="button" className="btn-secondary" onClick={handleCancel}>
               Batal
@@ -180,14 +180,14 @@ export default function TentangManager({ searchQuery = '' }) {
                   onClick={() => handleEdit(item)}
                   disabled={loading}
                 >
-                  ✏️ Edit
+                  Edit
                 </button>
                 <button
                   className="btn-delete"
                   onClick={() => handleDelete(item._id)}
                   disabled={loading}
                 >
-                  🗑️ Hapus
+                  Hapus
                 </button>
               </div>
             </div>

@@ -190,7 +190,7 @@ function App() {
       <main>
 
         {/* ── HERO ── */}
-        <section className="hero-section" id="beranda">
+        <section className="hero-section" id="beranda" style={{ '--hero-image': `url(${heroImage})` }}>
           <div className="hero-blob hero-blob-a" aria-hidden="true"></div>
           <div className="hero-blob hero-blob-b" aria-hidden="true"></div>
           <div className="hero-pattern" aria-hidden="true"></div>

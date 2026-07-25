@@ -19,6 +19,7 @@ export default {
           { title: 'Kerajinan', value: 'Kerajinan' },
           { title: 'Fashion', value: 'Fashion' },
           { title: 'Pertanian', value: 'Pertanian' },
+          { title: 'Peternakan', value: 'Peternakan' },
           { title: 'Jasa', value: 'Jasa' },
         ],
       },
