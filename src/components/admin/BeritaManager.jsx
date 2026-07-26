@@ -2,9 +2,27 @@ import { useState, useEffect } from 'react'
 import NotificationModal from '../NotificationModal'
 import { getDaftarBerita, createDocument, updateDocument, deleteDocument, urlFor } from '../../lib/sanityClient'
 import SanityImageUpload from '../SanityImageUpload'
+import { daftarBerita } from '../../data/siteData'
+
+function normalizeBeritaItem(item) {
+  return {
+    ...item,
+    judul: item.judul || item.title || '',
+    konten: item.konten || item.excerpt || item.description || '',
+    tanggalPublikasi: item.tanggalPublikasi || item.date || new Date().toISOString().split('T')[0],
+    penulis: item.penulis || '',
+    kategori: item.kategori || '',
+  }
+}
+
+function formatDateLabel(value) {
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return value || '-'
+  return date.toLocaleDateString('id-ID')
+}
 
 export default function BeritaManager({ searchQuery = '' }) {
-  const [beritaList, setBeritaList] = useState([])
+  const [beritaList, setBeritaList] = useState(daftarBerita.map(normalizeBeritaItem))
   const [loading, setLoading] = useState(false)
   const [editing, setEditing] = useState(null)
   const [showForm, setShowForm] = useState(false)
@@ -34,9 +52,10 @@ export default function BeritaManager({ searchQuery = '' }) {
     setLoading(true)
     try {
       const data = await getDaftarBerita()
-      setBeritaList(data || [])
+      setBeritaList((data || daftarBerita).map(normalizeBeritaItem))
     } catch (error) {
       console.error('Error fetching berita:', error)
+      setBeritaList(daftarBerita.map(normalizeBeritaItem))
     }
     setLoading(false)
   }
@@ -123,9 +142,9 @@ export default function BeritaManager({ searchQuery = '' }) {
 
   const handleEdit = (item) => {
     setFormData({
-      judul: item.judul,
-      konten: item.konten,
-      tanggalPublikasi: item.tanggalPublikasi,
+      judul: item.judul || item.title || '',
+      konten: item.konten || item.excerpt || item.description || '',
+      tanggalPublikasi: item.tanggalPublikasi || item.date || new Date().toISOString().split('T')[0],
       image: item.image,
       penulis: item.penulis || '',
       kategori: item.kategori || '',
@@ -287,10 +306,10 @@ export default function BeritaManager({ searchQuery = '' }) {
               <div className="item-content">
                 <h3>{item.judul}</h3>
                 <p className="meta">
-                  {new Date(item.tanggalPublikasi).toLocaleDateString('id-ID')}
+                  {formatDateLabel(item.tanggalPublikasi)}
                   {item.penulis && ` • Penulis: ${item.penulis}`}
                 </p>
-                <p className="konten-preview">{item.konten.substring(0, 150)}...</p>
+                <p className="konten-preview">{(item.konten || '').substring(0, 150)}...</p>
               </div>
               <div className="item-actions">
                 <button

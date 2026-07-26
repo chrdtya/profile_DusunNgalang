@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react'
 import NotificationModal from '../NotificationModal'
 import { getGaleri, createDocument, deleteDocument, urlFor } from '../../lib/sanityClient'
 import SanityImageUpload from '../SanityImageUpload'
+import { daftarGaleri } from '../../data/siteData'
 
 export default function GaleriManager({ searchQuery = '' }) {
-  const [galeriList, setGaleriList] = useState([])
+  const [galeriList, setGaleriList] = useState(daftarGaleri)
   const [loading, setLoading] = useState(false)
   const [showForm, setShowForm] = useState(false)
   const [notification, setNotification] = useState({
@@ -31,9 +32,10 @@ export default function GaleriManager({ searchQuery = '' }) {
     setLoading(true)
     try {
       const data = await getGaleri()
-      setGaleriList(data || [])
+      setGaleriList(data || daftarGaleri)
     } catch (error) {
       console.error('Error fetching galeri:', error)
+      setGaleriList(daftarGaleri)
     }
     setLoading(false)
   }

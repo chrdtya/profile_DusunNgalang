@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import NotificationModal from '../NotificationModal'
 import { getTentangDusun, createDocument, updateDocument, deleteDocument } from '../../lib/sanityClient'
+import { tentangDusun } from '../../data/siteData'
 
 export default function TentangManager({ searchQuery = '' }) {
-  const [tentangList, setTentangList] = useState([])
+  const [tentangList, setTentangList] = useState(tentangDusun)
   const [loading, setLoading] = useState(false)
   const [editing, setEditing] = useState(null)
   const [showForm, setShowForm] = useState(false)
@@ -29,9 +30,10 @@ export default function TentangManager({ searchQuery = '' }) {
     setLoading(true)
     try {
       const data = await getTentangDusun()
-      setTentangList(data || [])
+      setTentangList(data || tentangDusun)
     } catch (error) {
       console.error('Error fetching tentang:', error)
+      setTentangList(tentangDusun)
     }
     setLoading(false)
   }

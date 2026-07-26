@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react'
 import NotificationModal from '../NotificationModal'
 import { getDaftarUmkm, createDocument, updateDocument, deleteDocument, urlFor } from '../../lib/sanityClient'
 import SanityImageUpload from '../SanityImageUpload'
+import { daftarUmkm } from '../../data/siteData'
 
 export default function UmkmManager({ searchQuery = '' }) {
-  const [umkmList, setUmkmList] = useState([])
+  const [umkmList, setUmkmList] = useState(daftarUmkm)
   const [loading, setLoading] = useState(false)
   const [editing, setEditing] = useState(null)
   const [showForm, setShowForm] = useState(false)
@@ -34,10 +35,10 @@ export default function UmkmManager({ searchQuery = '' }) {
     setLoading(true)
     try {
       const data = await getDaftarUmkm()
-      setUmkmList(data || [])
+      setUmkmList(data || daftarUmkm)
     } catch (error) {
       console.error('Error fetching UMKM:', error)
-      setNotification({ open: true, type: 'error', title: 'Gagal memuat UMKM', message: 'Terjadi kesalahan saat memuat data UMKM. Silakan coba muat ulang.' })
+      setUmkmList(daftarUmkm)
     }
     setLoading(false)
   }

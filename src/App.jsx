@@ -32,7 +32,7 @@ const navLinks = [
   { label: 'Acara', href: '#acara' },
   { label: 'Berita', href: '#berita' },
   { label: 'Galeri', href: '#galeri' },
-  { label: 'Lokasi', href: '#lokasi' },
+  { label: 'Data Geografi', href: '#lokasi' },
 ]
 
 const heroImage =
@@ -185,6 +185,52 @@ function App() {
             </button>
           </div>
         </div>
+
+        <button
+          type="button"
+          className={`menu-backdrop${isMenuOpen ? ' open' : ''}`}
+          aria-label="Tutup menu navigasi"
+          tabIndex={isMenuOpen ? 0 : -1}
+          onClick={() => setIsMenuOpen(false)}
+        />
+
+        <nav className={`mobile-sidebar${isMenuOpen ? ' open' : ''}`} aria-label="Menu utama mobile">
+          <div className="mobile-sidebar-header">
+            <div>
+              <span className="mobile-sidebar-kicker">Akses Cepat</span>
+              <h2>Menu Fitur</h2>
+            </div>
+            <button
+              type="button"
+              className="mobile-sidebar-close"
+              aria-label="Tutup menu navigasi"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <X size={18} />
+            </button>
+          </div>
+
+          <ul className="mobile-sidebar-list">
+            {navLinks.map((link) => {
+              const isActive = activeHash === link.href
+              return (
+                <li key={link.href}>
+                  <a
+                    className={`mobile-sidebar-item${isActive ? ' active' : ''}`}
+                    href={link.href}
+                    onClick={() => {
+                      setActiveHash(link.href)
+                      setIsMenuOpen(false)
+                    }}
+                  >
+                    <span>{link.label}</span>
+                    <ArrowRight size={16} />
+                  </a>
+                </li>
+              )
+            })}
+          </ul>
+        </nav>
       </header>
 
       <main>
@@ -283,28 +329,6 @@ function App() {
         <SectionBerita />
         <SectionGaleri />
         <SectionLokasi />
-
-        {/* ── CTA ── */}
-        <section className="cta-section">
-          <Reveal className="cta-box" y={22}>
-            <div className="cta-pattern" aria-hidden="true"></div>
-            <div className="cta-text">
-              <h2>Daftarkan UMKM Anda</h2>
-              <p>
-                Miliki usaha di Dusun Ngalang? Daftarkan dan promosikan produk atau
-                layanan Anda kepada masyarakat dan pengunjung.
-              </p>
-            </div>
-            <div className="cta-actions">
-              <a className="btn btn-cta" href="#umkm">
-                Daftar Sekarang <ArrowRight size={16} />
-              </a>
-              <a className="btn btn-ghost-dark" href="#tentang-dusun">
-                Pelajari Lebih
-              </a>
-            </div>
-          </Reveal>
-        </section>
 
       </main>
 

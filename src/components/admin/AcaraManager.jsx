@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import NotificationModal from '../NotificationModal'
 import { getDaftarAcara, createDocument, updateDocument, deleteDocument } from '../../lib/sanityClient'
+import { daftarAcara } from '../../data/siteData'
 
 export default function AcaraManager({ searchQuery = '' }) {
-  const [acaraList, setAcaraList] = useState([])
+  const [acaraList, setAcaraList] = useState(daftarAcara)
   const [loading, setLoading] = useState(false)
   const [editing, setEditing] = useState(null)
   const [showForm, setShowForm] = useState(false)
@@ -33,9 +34,10 @@ export default function AcaraManager({ searchQuery = '' }) {
     setLoading(true)
     try {
       const data = await getDaftarAcara()
-      setAcaraList(data || [])
+      setAcaraList(data || daftarAcara)
     } catch (error) {
       console.error('Error fetching acara:', error)
+      setAcaraList(daftarAcara)
     }
     setLoading(false)
   }
