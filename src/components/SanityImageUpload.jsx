@@ -1,7 +1,23 @@
 import { useState } from 'react'
+import NotificationModal from './NotificationModal'
+
 export default function SanityImageUpload({ onImageSelect }) {
   const [uploading, setUploading] = useState(false)
   const [imageUrl, setImageUrl] = useState('')
+  const [notification, setNotification] = useState({
+    open: false,
+    type: 'error',
+    title: '',
+    message: '',
+  })
+
+  const showNotification = (type, title, message) => {
+    setNotification({ open: true, type, title, message })
+  }
+
+  const closeNotification = () => {
+    setNotification((prev) => ({ ...prev, open: false }))
+  }
 
   const handleImageUpload = async (e) => {
     const file = e.target.files?.[0]
@@ -9,7 +25,7 @@ export default function SanityImageUpload({ onImageSelect }) {
 
     // Validasi ukuran file (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      alert('Ukuran file terlalu besar (max 5MB)')
+      showNotification('warning', 'Ukuran file terlalu besar', 'Ukuran file terlalu besar (max 5MB)')
       return
     }
 
@@ -23,7 +39,16 @@ export default function SanityImageUpload({ onImageSelect }) {
         },
         body: file,
       })
-      if (!response.ok) throw new Error(`Upload gagal: ${response.status}`)
+      if (!response.ok) {
+        let errorMessage = `Upload gagal: ${response.status}`
+        try {
+          const errorBody = await response.json()
+          if (errorBody?.error) errorMessage = errorBody.error
+        } catch {
+          // Keep the default status-based message if the body is not JSON.
+        }
+        throw new Error(errorMessage)
+      }
 
       const imageAsset = await response.json()
 
@@ -31,7 +56,11 @@ export default function SanityImageUpload({ onImageSelect }) {
       onImageSelect({ _type: 'reference', _ref: imageAsset._id })
     } catch (error) {
       console.error('Error uploading image:', error)
-      alert('Gagal mengunggah gambar')
+      showNotification(
+        'error',
+        'Gagal mengunggah gambar',
+        error instanceof Error ? error.message : 'Terjadi masalah saat mengunggah gambar. Silakan coba lagi.'
+      )
     }
     setUploading(false)
   }
@@ -50,6 +79,14 @@ export default function SanityImageUpload({ onImageSelect }) {
         className="file-input"
       />
       {imageUrl && <p className="success">✅ Gambar berhasil diunggah</p>}
+
+      <NotificationModal
+        open={notification.open}
+        type={notification.type}
+        title={notification.title}
+        message={notification.message}
+        onClose={closeNotification}
+      />
     </div>
   )
 }

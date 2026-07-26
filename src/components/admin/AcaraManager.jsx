@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import NotificationModal from '../NotificationModal'
 import { getDaftarAcara, createDocument, updateDocument, deleteDocument } from '../../lib/sanityClient'
 
 export default function AcaraManager({ searchQuery = '' }) {
@@ -6,6 +7,15 @@ export default function AcaraManager({ searchQuery = '' }) {
   const [loading, setLoading] = useState(false)
   const [editing, setEditing] = useState(null)
   const [showForm, setShowForm] = useState(false)
+  const [notification, setNotification] = useState({
+    open: false,
+    type: 'success',
+    title: '',
+    message: '',
+    confirmLabel: 'OK',
+    cancelLabel: 'Batal',
+    onConfirm: null,
+  })
   const [formData, setFormData] = useState({
     judul: '',
     kategori: '',
@@ -38,11 +48,31 @@ export default function AcaraManager({ searchQuery = '' }) {
     }))
   }
 
+  const showNotification = (type, title, message) => {
+    setNotification({ open: true, type, title, message, confirmLabel: 'OK', cancelLabel: 'Batal', onConfirm: null })
+  }
+
+  const showConfirm = (type, title, message, onConfirm, confirmLabel = 'Hapus') => {
+    setNotification({
+      open: true,
+      type,
+      title,
+      message,
+      confirmLabel,
+      cancelLabel: 'Batal',
+      onConfirm,
+    })
+  }
+
+  const closeNotification = () => {
+    setNotification((prev) => ({ ...prev, open: false }))
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     if (!formData.judul || !formData.kategori || !formData.tanggal || !formData.deskripsi) {
-      alert('Harap isi semua field yang diperlukan!')
+      showNotification('warning', 'Perhatian', 'Harap isi semua kolom yang wajib diisi sebelum menyimpan acara.')
       return
     }
 
@@ -62,10 +92,18 @@ export default function AcaraManager({ searchQuery = '' }) {
 
       if (editing) {
         await updateDocument(editing._id, dataToSave)
-        alert('Acara berhasil diupdate!')
+        showNotification(
+          'success',
+          'Acara berhasil diperbarui',
+          'Perubahan acara telah tersimpan dengan baik.'
+        )
       } else {
         await createDocument('acara', dataToSave)
-        alert('Acara berhasil ditambahkan!')
+        showNotification(
+          'success',
+          'Acara berhasil ditambahkan',
+          'Data acara baru berhasil disimpan.'
+        )
       }
 
       setFormData({
@@ -81,7 +119,7 @@ export default function AcaraManager({ searchQuery = '' }) {
       await fetchAcara()
     } catch (error) {
       console.error('Error saving acara:', error)
-      alert('Gagal menyimpan acara')
+      showNotification('error', 'Gagal menyimpan acara', 'Maaf, terjadi masalah saat menyimpan data acara. Silakan coba lagi.')
     }
     setLoading(false)
   }
@@ -100,18 +138,18 @@ export default function AcaraManager({ searchQuery = '' }) {
   }
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Yakin ingin menghapus acara ini?')) return
-
-    setLoading(true)
-    try {
-      await deleteDocument(id)
-      alert('Acara berhasil dihapus!')
-      await fetchAcara()
-    } catch (error) {
-      console.error('Error deleting acara:', error)
-      alert('Gagal menghapus acara')
-    }
-    setLoading(false)
+    showConfirm('warning', 'Hapus acara?', 'Yakin ingin menghapus acara ini?', async () => {
+      setLoading(true)
+      try {
+        await deleteDocument(id)
+        showNotification('success', 'Acara berhasil dihapus', 'Data acara telah dihapus.')
+        await fetchAcara()
+      } catch (error) {
+        console.error('Error deleting acara:', error)
+        showNotification('error', 'Gagal menghapus acara', 'Terjadi masalah saat menghapus acara. Silakan coba lagi.')
+      }
+      setLoading(false)
+    }, 'Hapus')
   }
 
   const handleCancel = () => {
@@ -232,6 +270,17 @@ export default function AcaraManager({ searchQuery = '' }) {
           </div>
         </form>
       )}
+
+      <NotificationModal
+        open={notification.open}
+        type={notification.type}
+        title={notification.title}
+        message={notification.message}
+        confirmLabel={notification.confirmLabel}
+        cancelLabel={notification.cancelLabel}
+        onClose={closeNotification}
+        onConfirm={notification.onConfirm}
+      />
 
       {loading ? (
         <p className="loading">Memuat data...</p>

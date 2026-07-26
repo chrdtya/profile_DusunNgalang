@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import NotificationModal from '../NotificationModal'
 import { getDaftarUmkm, createDocument, updateDocument, deleteDocument, urlFor } from '../../lib/sanityClient'
 import SanityImageUpload from '../SanityImageUpload'
 
@@ -7,6 +8,15 @@ export default function UmkmManager({ searchQuery = '' }) {
   const [loading, setLoading] = useState(false)
   const [editing, setEditing] = useState(null)
   const [showForm, setShowForm] = useState(false)
+  const [notification, setNotification] = useState({
+    open: false,
+    type: 'success',
+    title: '',
+    message: '',
+    confirmLabel: 'OK',
+    cancelLabel: 'Batal',
+    onConfirm: null,
+  })
   const [formData, setFormData] = useState({
     name: '',
     category: '',
@@ -27,7 +37,7 @@ export default function UmkmManager({ searchQuery = '' }) {
       setUmkmList(data || [])
     } catch (error) {
       console.error('Error fetching UMKM:', error)
-      alert('Gagal memuat data UMKM')
+      setNotification({ open: true, type: 'error', title: 'Gagal memuat UMKM', message: 'Terjadi kesalahan saat memuat data UMKM. Silakan coba muat ulang.' })
     }
     setLoading(false)
   }
@@ -38,6 +48,26 @@ export default function UmkmManager({ searchQuery = '' }) {
       ...prev,
       [name]: value,
     }))
+  }
+
+  const showNotification = (type, title, message) => {
+    setNotification({ open: true, type, title, message, confirmLabel: 'OK', cancelLabel: 'Batal', onConfirm: null })
+  }
+
+  const showConfirm = (type, title, message, onConfirm, confirmLabel = 'Hapus') => {
+    setNotification({
+      open: true,
+      type,
+      title,
+      message,
+      confirmLabel,
+      cancelLabel: 'Batal',
+      onConfirm,
+    })
+  }
+
+  const closeNotification = () => {
+    setNotification((prev) => ({ ...prev, open: false }))
   }
 
   const handleImageSelect = (imageAsset) => {
@@ -51,7 +81,7 @@ export default function UmkmManager({ searchQuery = '' }) {
     e.preventDefault()
 
     if (!formData.name || !formData.category || !formData.description) {
-      alert('Harap isi semua field yang diperlukan!')
+      showNotification('warning', 'Perhatian', 'Harap isi semua field yang diperlukan!')
       return
     }
 
@@ -68,10 +98,10 @@ export default function UmkmManager({ searchQuery = '' }) {
 
       if (editing) {
         await updateDocument(editing._id, dataToSave)
-        alert('UMKM berhasil diupdate!')
+        showNotification('success', 'UMKM berhasil diperbarui', 'Perubahan UMKM telah tersimpan.')
       } else {
         await createDocument('umkm', dataToSave)
-        alert('UMKM berhasil ditambahkan!')
+        showNotification('success', 'UMKM berhasil ditambahkan', 'UMKM baru berhasil disimpan.')
       }
 
       setFormData({
@@ -87,7 +117,7 @@ export default function UmkmManager({ searchQuery = '' }) {
       await fetchUmkm()
     } catch (error) {
       console.error('Error saving UMKM:', error)
-      alert('Gagal menyimpan UMKM')
+      showNotification('error', 'Gagal menyimpan UMKM', 'Maaf, terjadi masalah saat menyimpan UMKM. Silakan coba lagi.')
     }
     setLoading(false)
   }
@@ -106,18 +136,18 @@ export default function UmkmManager({ searchQuery = '' }) {
   }
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Yakin ingin menghapus UMKM ini?')) return
-
-    setLoading(true)
-    try {
-      await deleteDocument(id)
-      alert('UMKM berhasil dihapus!')
-      await fetchUmkm()
-    } catch (error) {
-      console.error('Error deleting UMKM:', error)
-      alert('Gagal menghapus UMKM')
-    }
-    setLoading(false)
+    showConfirm('warning', 'Hapus UMKM?', 'Yakin ingin menghapus UMKM ini?', async () => {
+      setLoading(true)
+      try {
+        await deleteDocument(id)
+        showNotification('success', 'UMKM dihapus', 'UMKM berhasil dihapus.')
+        await fetchUmkm()
+      } catch (error) {
+        console.error('Error deleting UMKM:', error)
+        showNotification('error', 'Gagal menghapus UMKM', 'Terjadi masalah saat menghapus UMKM. Silakan coba lagi.')
+      }
+      setLoading(false)
+    }, 'Hapus')
   }
 
   const handleCancel = () => {
@@ -177,6 +207,7 @@ export default function UmkmManager({ searchQuery = '' }) {
               <option value="">Pilih Kategori</option>
               <option value="Kuliner">Kuliner</option>
               <option value="Kerajinan">Kerajinan</option>
+              <option value="Perdagangan">Perdagangan</option>
               <option value="Fashion">Fashion</option>
               <option value="Pertanian">Pertanian</option>
               <option value="Peternakan">Peternakan</option>
@@ -241,6 +272,17 @@ export default function UmkmManager({ searchQuery = '' }) {
           </div>
         </form>
       )}
+
+      <NotificationModal
+        open={notification.open}
+        type={notification.type}
+        title={notification.title}
+        message={notification.message}
+        confirmLabel={notification.confirmLabel}
+        cancelLabel={notification.cancelLabel}
+        onClose={closeNotification}
+        onConfirm={notification.onConfirm}
+      />
 
       {loading ? (
         <p className="loading">Memuat data...</p>

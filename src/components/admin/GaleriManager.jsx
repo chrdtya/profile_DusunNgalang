@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import NotificationModal from '../NotificationModal'
 import { getGaleri, createDocument, deleteDocument, urlFor } from '../../lib/sanityClient'
 import SanityImageUpload from '../SanityImageUpload'
 
@@ -6,6 +7,15 @@ export default function GaleriManager({ searchQuery = '' }) {
   const [galeriList, setGaleriList] = useState([])
   const [loading, setLoading] = useState(false)
   const [showForm, setShowForm] = useState(false)
+  const [notification, setNotification] = useState({
+    open: false,
+    type: 'success',
+    title: '',
+    message: '',
+    confirmLabel: 'OK',
+    cancelLabel: 'Batal',
+    onConfirm: null,
+  })
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -43,11 +53,31 @@ export default function GaleriManager({ searchQuery = '' }) {
     }))
   }
 
+  const showNotification = (type, title, message) => {
+    setNotification({ open: true, type, title, message, confirmLabel: 'OK', cancelLabel: 'Batal', onConfirm: null })
+  }
+
+  const showConfirm = (type, title, message, onConfirm, confirmLabel = 'Hapus') => {
+    setNotification({
+      open: true,
+      type,
+      title,
+      message,
+      confirmLabel,
+      cancelLabel: 'Batal',
+      onConfirm,
+    })
+  }
+
+  const closeNotification = () => {
+    setNotification((prev) => ({ ...prev, open: false }))
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     if (!formData.title || !formData.image) {
-      alert('Harap isi title dan upload gambar!')
+      showNotification('warning', 'Perhatian', 'Harap isi title dan upload gambar!')
       return
     }
 
@@ -61,7 +91,7 @@ export default function GaleriManager({ searchQuery = '' }) {
       }
 
       await createDocument('galeri', dataToSave)
-      alert('Galeri berhasil ditambahkan!')
+      showNotification('success', 'Galeri berhasil ditambahkan', 'Foto galeri baru berhasil disimpan.')
 
       setFormData({
         title: '',
@@ -73,24 +103,24 @@ export default function GaleriManager({ searchQuery = '' }) {
       await fetchGaleri()
     } catch (error) {
       console.error('Error saving galeri:', error)
-      alert('Gagal menyimpan galeri')
+      showNotification('error', 'Gagal menyimpan galeri', 'Terjadi masalah saat menyimpan galeri. Silakan coba lagi.')
     }
     setLoading(false)
   }
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Yakin ingin menghapus gambar ini?')) return
-
-    setLoading(true)
-    try {
-      await deleteDocument(id)
-      alert('Galeri berhasil dihapus!')
-      await fetchGaleri()
-    } catch (error) {
-      console.error('Error deleting galeri:', error)
-      alert('Gagal menghapus galeri')
-    }
-    setLoading(false)
+    showConfirm('warning', 'Hapus gambar?', 'Yakin ingin menghapus gambar ini?', async () => {
+      setLoading(true)
+      try {
+        await deleteDocument(id)
+        showNotification('success', 'Galeri berhasil dihapus', 'Gambar galeri telah dihapus.')
+        await fetchGaleri()
+      } catch (error) {
+        console.error('Error deleting galeri:', error)
+        showNotification('error', 'Gagal menghapus galeri', 'Terjadi masalah saat menghapus galeri. Silakan coba lagi.')
+      }
+      setLoading(false)
+    }, 'Hapus')
   }
 
   const handleCancel = () => {
@@ -176,6 +206,17 @@ export default function GaleriManager({ searchQuery = '' }) {
           </div>
         </form>
       )}
+
+      <NotificationModal
+        open={notification.open}
+        type={notification.type}
+        title={notification.title}
+        message={notification.message}
+        confirmLabel={notification.confirmLabel}
+        cancelLabel={notification.cancelLabel}
+        onClose={closeNotification}
+        onConfirm={notification.onConfirm}
+      />
 
       {loading ? (
         <p className="loading">Memuat data...</p>

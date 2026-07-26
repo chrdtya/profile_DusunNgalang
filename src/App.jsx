@@ -38,6 +38,10 @@ const navLinks = [
 const heroImage =
   'https://images.unsplash.com/photo-1576076983530-d45f9c5b60b2?auto=format&fit=crop&w=1400&q=80'
 
+const heroVideoUrl = 'https://youtu.be/kcyMei5cNig?si=dirwqpA-YI4yFD-f'
+const heroVideoId = 'kcyMei5cNig'
+const heroVideoSrc = `https://www.youtube-nocookie.com/embed/${heroVideoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${heroVideoId}&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0`
+
 // Admin panel (termasuk recharts & sanity write proxy) di-lazy-load agar bundle publik tetap ringan
 const AdminPanel = lazy(() => import('./components/AdminPanel'))
 
@@ -171,10 +175,6 @@ function App() {
           </nav>
 
           <div className="topbar-actions">
-            <a className="btn-login" href="#admin" title="Admin Panel">
-              <LogIn size={16} strokeWidth={2.4} />
-              <span>Login</span>
-            </a>
             <button
               className={`menu-toggle${isMenuOpen ? ' open' : ''}`}
               aria-label={isMenuOpen ? 'Tutup menu navigasi' : 'Buka menu navigasi'}
@@ -191,22 +191,31 @@ function App() {
 
         {/* ── HERO ── */}
         <section className="hero-section" id="beranda" style={{ '--hero-image': `url(${heroImage})` }}>
+          <div className="hero-video-backdrop" aria-hidden="true">
+            <iframe
+              src={heroVideoSrc}
+              title="Video background Padukuhan Ngalang"
+              loading="eager"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              referrerPolicy="strict-origin-when-cross-origin"
+              tabIndex="-1"
+            ></iframe>
+          </div>
           <div className="hero-blob hero-blob-a" aria-hidden="true"></div>
           <div className="hero-blob hero-blob-b" aria-hidden="true"></div>
           <div className="hero-pattern" aria-hidden="true"></div>
 
           <div className="hero-inner">
             <Reveal className="hero-copy">
-              <span className="hero-kicker">
-                <Leaf size={14} /> Portal Informasi Resmi
-              </span>
               <h1>
-                Menyapa Dunia dari <span className="hero-highlight">Dusun Ngalang</span>
+                Selamat Datang di <span className="hero-highlight">Padukuhan Ngalang</span>
               </h1>
               <p className="hero-subtitle">
-                Portal informasi UMKM, acara tradisional, serta kegiatan masyarakat
-                Dusun Ngalang — dirancang sederhana, modern, dan mudah diakses siapa saja.
+                Portal informasi UMKM, acara tradisional, serta kegiatan masyarakt Padukuhan Ngalang dirancang sederhana, modern, dan mudah diakses siapa saja.
               </p>
+              <a className="hero-video-link" href={heroVideoUrl} target="_blank" rel="noreferrer">
+                Lihat video YouTube
+              </a>
               <div className="hero-actions">
                 <a className="btn btn-primary" href="#umkm">
                   Jelajahi UMKM <ArrowRight size={16} />
@@ -359,8 +368,14 @@ function App() {
 
         </Reveal>
         <div className="footer-bottom">
-          <p>© 2026 Dusun Ngalang. Hak cipta dilindungi.</p>
-          <p>Dibangun untuk kemajuan dusun</p>
+          <div className="footer-bottom-meta">
+            <p>© 2026 Dusun Ngalang. Hak cipta dilindungi.</p>
+            <p>Dibangun untuk kemajuan dusun</p>
+          </div>
+          <a className="btn-login footer-login" href="#admin" title="Admin Panel">
+            <LogIn size={16} strokeWidth={2.4} />
+            <span>Login</span>
+          </a>
         </div>
       </footer>
 
