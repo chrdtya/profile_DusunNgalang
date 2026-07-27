@@ -360,7 +360,6 @@ function App() {
                 transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
                 aria-hidden="true"
               >
-                ♥
               </motion.span>
             </p>
           </div>

@@ -3,9 +3,6 @@ import { profilDesaStats, daftarPadukuhan } from '../data/siteData'
 import Reveal, { RevealItem } from '../components/motion/Reveal'
 import CountUp from '../components/motion/CountUp'
 
-const villageImage =
-  'https://images.unsplash.com/photo-1566622246836-12802785656a?auto=format&fit=crop&w=1000&q=80'
-
 const statIcons = {
   'Luas Wilayah': Ruler,
   'Jumlah Penduduk': Users,
@@ -23,13 +20,6 @@ export default function SectionProfilDesa() {
       <span className="profil-desa-blob profil-desa-blob-b" aria-hidden="true"></span>
 
       <Reveal className="profil-desa-panel" y={22}>
-        <div className="profil-desa-media">
-          <img src={villageImage} alt="Panorama Kalurahan Ngalang" loading="lazy" />
-          <span className="profil-desa-media-badge">
-            <MapPinned size={14} /> Kalurahan Ngalang
-          </span>
-        </div>
-
         <div className="profil-desa-copy">
           <span className="profil-desa-kicker"><MapPinned size={14} /> Konteks Wilayah</span>
           <h3>Padukuhan Ngalang, bagian dari Kalurahan Ngalang</h3>

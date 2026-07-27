@@ -2267,51 +2267,12 @@ h1, h2, h3, h4 {
   box-shadow: var(--shadow-lift);
   padding: 40px;
   display: grid;
-  grid-template-columns: 0.85fr 1.15fr;
+  grid-template-columns: 1fr;
   grid-template-areas:
-    "media copy"
-    "stats stats"
-    "chips chips";
+    "copy"
+    "stats"
+    "chips";
   gap: 32px 40px;
-}
-
-.profil-desa-media {
-  grid-area: media;
-  position: relative;
-  align-self: center;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  box-shadow: var(--shadow-soft);
-  aspect-ratio: 4 / 3;
-}
-
-.profil-desa-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.5s ease;
-}
-
-.profil-desa-panel:hover .profil-desa-media img {
-  transform: scale(1.04);
-}
-
-.profil-desa-media-badge {
-  position: absolute;
-  left: 14px;
-  bottom: 14px;
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 7px 14px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.92);
-  color: var(--primary);
-  font-size: 0.76rem;
-  font-weight: 800;
-  box-shadow: var(--shadow-soft);
 }
 
 .profil-desa-tags {
@@ -2460,12 +2421,6 @@ h1, h2, h3, h4 {
 
 @media (max-width: 900px) {
   .profil-desa-panel {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "media"
-      "copy"
-      "stats"
-      "chips";
     padding: 28px;
   }
 
