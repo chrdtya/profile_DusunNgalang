@@ -69,6 +69,7 @@ export default function SectionGaleri() {
                 aria-label={`Perbesar foto: ${item.title || item.caption}`}
               >
                 <img src={imgSrc} alt={item.title || item.caption} loading="lazy" />
+                <span className="gallery-item-scrim" aria-hidden="true"></span>
                 <span className="gallery-item-overlay">
                   <Expand size={18} />
                 </span>

@@ -1,3 +1,5 @@
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { MapPin, Mountain, Wheat, Landmark, ArrowRight } from 'lucide-react'
 import { tentangDusun } from '../data/siteData'
 import { getTentangDusun } from '../lib/sanityClient'
@@ -12,28 +14,28 @@ const topicMeta = [
     href: '#lokasi',
     icon: MapPin,
     image:
-      'https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1566622246836-12802785656a?auto=format&fit=crop&w=1000&q=80',
   },
   {
     keywords: ['alam', 'lingkungan'],
     href: '#galeri',
     icon: Mountain,
     image:
-      'https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1500622944204-b135684e99fd?auto=format&fit=crop&w=1000&q=80',
   },
   {
     keywords: ['pencaharian', 'ekonomi', 'usaha'],
     href: '#umkm',
     icon: Wheat,
     image:
-      'https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1636057423765-c766099ef09d?auto=format&fit=crop&w=1000&q=80',
   },
   {
     keywords: ['budaya', 'tradisi'],
     href: '#acara',
     icon: Landmark,
     image:
-      'https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1542897643-cfccd88c7127?auto=format&fit=crop&w=1000&q=80',
   },
 ]
 
@@ -47,19 +49,29 @@ function resolveTopicMeta(title = '') {
 
 export default function SectionTentang() {
   const items = useSanityData(getTentangDusun, tentangDusun)
+  const rowsRef = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: rowsRef,
+    offset: ['start 70%', 'end 60%'],
+  })
+  const timelineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
 
   return (
-    <section className="tentang-section" id="tentang-dusun">
+    <section className="tentang-section mesh-gradient-bg" id="tentang-dusun">
       <Reveal className="section-header">
-        <span className="section-kicker">Profil Dusun</span>
-        <h2>Tentang Dusun Ngalang</h2>
+        <span className="section-kicker">Cerita Dusun</span>
+        <h2>Mengenal Dusun Ngalang</h2>
         <p>
-          Gambaran singkat mengenai lokasi, lingkungan alam, mata pencaharian,
-          serta tradisi warga Dusun Ngalang.
+          Sebuah perjalanan singkat mengenal lokasi, alam, mata pencaharian, dan
+          budaya yang membentuk kehidupan warga Dusun Ngalang.
         </p>
       </Reveal>
 
-      <div className="tentang-rows">
+      <div className="tentang-rows" ref={rowsRef}>
+        <div className="tentang-timeline-track" aria-hidden="true">
+          <motion.div className="tentang-timeline-fill" style={{ height: timelineHeight }} />
+        </div>
+
         {items.map((item, index) => {
           const meta = resolveTopicMeta(item.title)
           const Icon = meta.icon
@@ -71,7 +83,19 @@ export default function SectionTentang() {
               className={`tentang-row${reversed ? ' reversed' : ''}`}
               y={36}
             >
+              <motion.span
+                className="tentang-node"
+                initial={{ scale: 0.4, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: true, amount: 0.6 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                aria-hidden="true"
+              >
+                <Icon size={14} strokeWidth={2.4} />
+              </motion.span>
+
               <div className="tentang-row-media">
+                <span className="tentang-row-shape" aria-hidden="true"></span>
                 <img src={meta.image} alt={item.title} loading="lazy" />
               </div>
               <div className="tentang-row-copy">

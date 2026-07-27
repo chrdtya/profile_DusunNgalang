@@ -13,7 +13,7 @@ export const tentangDusun = [
   {
     title: 'Mata Pencaharian',
     description:
-      'Sebagian besar penduduk Padukuhan Jambu bermata pencaharian sebagai petani, peternak, dan pelaku usaha kecil atau UMKM.',
+      'Sebagian besar penduduk Padukuhan Ngalang bermata pencaharian sebagai petani, peternak, dan pelaku usaha kecil atau UMKM.',
   },
   {
     title: 'Budaya & Tradisi',
@@ -28,7 +28,7 @@ export const daftarUmkm = [
     name: 'Warung Makan Bu Siti',
     category: 'Kuliner',
     image:
-      'https://images.unsplash.com/photo-1499529112087-3cb3b73cec95?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1569058242252-623df46b5025?auto=format&fit=crop&w=1200&q=80',
     description:
       'Menyediakan berbagai menu masakan tradisional Jawa yang lezat dan terjangkau.',
     address: 'Jl. Raya Ngalang No. 12',
@@ -37,7 +37,7 @@ export const daftarUmkm = [
     name: 'Kerajinan Bambu Pak Hadi',
     category: 'Kerajinan',
     image:
-      'https://images.unsplash.com/photo-1596704017254-9d31f0c8f0d8?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1534953342533-7711c98712be?auto=format&fit=crop&w=1200&q=80',
     description:
       'Produsen dan penjual berbagai kerajinan bambu berkualitas tinggi untuk kebutuhan rumah tangga.',
     address: 'Jl. Ngalang Timur No. 5',
@@ -46,7 +46,7 @@ export const daftarUmkm = [
     name: 'Batik Ngalang',
     category: 'Fashion',
     image:
-      'https://images.unsplash.com/photo-1618316522540-6ca0f9c1d892?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1604973104381-870c92f10343?auto=format&fit=crop&w=1200&q=80',
     description:
       'Toko batik dengan motif khas Ngalang, tersedia batik tulis dan batik cap untuk souvenir.',
     address: 'Jl. Pasar Ngalang No. 8',
@@ -68,6 +68,8 @@ export const daftarAcara = [
     judul: 'Rasulan Dusun Ngalang',
     tanggal: '15 Juni 2026',
     lokasi: 'Balai Dusun',
+    image:
+      'https://images.unsplash.com/photo-1546186479-607640447f9a?auto=format&fit=crop&w=1200&q=80',
     deskripsi:
       'Upacara adat tahunan Nyadran Gunung Genthong dan Rasul Gubug Gedhe sebagai wujud syukur pascapanen yang mempertemukan seluruh warga dusun.',
     kegiatan: kegiatanRasulan,
@@ -77,6 +79,8 @@ export const daftarAcara = [
     judul: 'Gotong Royong Lingkungan',
     tanggal: '29 Juni 2026',
     lokasi: 'Seluruh Dusun',
+    image:
+      'https://images.unsplash.com/photo-1616680214084-22670de1bc82?auto=format&fit=crop&w=1200&q=80',
     deskripsi:
       'Kegiatan bersih-bersih dan perbaikan fasilitas umum dusun yang melibatkan seluruh warga lintas RT sebagai wujud semangat kebersamaan.',
     kegiatan: [
@@ -92,6 +96,8 @@ export const daftarAcara = [
     judul: 'Peringatan HUT RI ke-81',
     tanggal: '17 Agustus 2026',
     lokasi: 'Lapangan Dusun',
+    image:
+      'https://images.unsplash.com/photo-1533805994737-558461dcb28e?auto=format&fit=crop&w=1200&q=80',
     deskripsi:
       'Perayaan Hari Kemerdekaan Republik Indonesia dengan upacara bendera, lomba tradisional, dan pentas seni warga yang meriah dan penuh semangat.',
     kegiatan: [
@@ -112,7 +118,7 @@ export const daftarBerita = [
     kategori: 'Kegiatan',
     penulis: 'Tim Dusun Ngalang',
     image:
-      'https://images.unsplash.com/photo-1464207687429-7505649dae38?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1616680214084-22670de1bc82?auto=format&fit=crop&w=900&q=80',
     excerpt:
       'Warga Dusun Ngalang memulai kerja bakti lintas RT untuk menyiapkan lokasi, konsumsi, serta rangkaian kegiatan budaya.',
   },
@@ -122,7 +128,7 @@ export const daftarBerita = [
     kategori: 'UMKM',
     penulis: 'Tim Dusun Ngalang',
     image:
-      'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1631010231130-5c7828d9a3a7?auto=format&fit=crop&w=900&q=80',
     excerpt:
       'Pendampingan pemasaran digital diikuti pelaku usaha lokal agar produk Dusun Ngalang lebih dikenal luas.',
   },
@@ -132,7 +138,7 @@ export const daftarBerita = [
     kategori: 'Pengumuman',
     penulis: 'Tim Dusun Ngalang',
     image:
-      'https://images.unsplash.com/photo-1576076983530-d45f9c5b60b2?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1566622246836-12802785656a?auto=format&fit=crop&w=900&q=80',
     excerpt:
       'Pemerintah desa memperbarui informasi rute dan titik parkir untuk memudahkan tamu yang berkunjung.',
   },
@@ -142,13 +148,13 @@ export const daftarBerita = [
 export const daftarGaleri = [
   {
     image:
-      'https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1636057423765-c766099ef09d?auto=format&fit=crop&w=1200&q=80',
     caption: 'Hamparan sawah saat musim tanam',
     category: 'Alam',
   },
   {
     image:
-      'https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1500622944204-b135684e99fd?auto=format&fit=crop&w=1200&q=80',
     caption: 'Perbukitan karst di sekitar Ngalang',
     category: 'Alam',
   },
@@ -160,7 +166,7 @@ export const daftarGaleri = [
   },
   {
     image:
-      'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1604973104381-870c92f10343?auto=format&fit=crop&w=1200&q=80',
     caption: 'Produk UMKM unggulan dusun',
     category: 'UMKM',
   },
@@ -172,7 +178,7 @@ export const daftarGaleri = [
   },
   {
     image:
-      'https://images.unsplash.com/photo-1464207687429-7505649dae38?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1616680214084-22670de1bc82?auto=format&fit=crop&w=1200&q=80',
     caption: 'Suasana gotong royong masyarakat',
     category: 'Kegiatan',
   },
@@ -196,4 +202,18 @@ export const dataGeografis = [
     label: 'Akses Kunjungan',
     value: 'Dapat dijangkau kendaraan roda dua/empat melalui jalur utama Gedangsari',
   },
+]
+
+// Profil resmi Kalurahan Ngalang — Padukuhan Ngalang adalah salah satu dari 14 padukuhan
+// di kalurahan ini. Angka bersumber dari data administrasi Kecamatan Gedangsari (BPS/profil desa).
+export const profilDesaStats = [
+  { label: 'Luas Wilayah', value: 14.82, suffix: ' km²' },
+  { label: 'Jumlah Penduduk', value: 8969, suffix: '' },
+  { label: 'Padukuhan', value: 14, suffix: '' },
+  { label: 'Jarak ke Kabupaten', value: 17, suffix: ' km' },
+]
+
+export const daftarPadukuhan = [
+  'Boyo', 'Kenteng', 'Magirejo', 'Buyutan', 'Manggung', 'Karanganyar', 'Sambeng',
+  'Karang', 'Ngasem', 'Sumberjo', 'Wareng', 'Plosodoyong', 'Ngalang', 'Nglaran',
 ]

@@ -111,7 +111,7 @@ export default function DashboardHome({ onNavigate }) {
                     fontSize: 13,
                   }}
                 />
-                <Bar dataKey="jumlah" fill="#059669" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="jumlah" fill="var(--admin-primary)" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           ) : (

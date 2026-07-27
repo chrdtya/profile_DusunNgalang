@@ -1,28 +1,31 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
+import Lenis from 'lenis'
 import {
   Leaf,
   LogIn,
   Menu,
   X,
   ArrowRight,
-  MapPin,
-  Store,
   Camera,
   Users,
   MessageCircle,
 } from 'lucide-react'
 import './App.css'
 import Reveal from './components/motion/Reveal'
+import CursorGlow from './components/motion/CursorGlow'
+import BackToTop from './components/motion/BackToTop'
+import WaveDivider from './components/motion/WaveDivider'
+import SectionHero from './sections/SectionHero'
+import SectionProfilDesa from './sections/SectionProfilDesa'
 import SectionTentang from './sections/SectionTentang'
+import SectionFiturDesa from './sections/SectionFiturDesa'
+import SectionOverview from './sections/SectionOverview'
 import SectionUmkm from './sections/SectionUmkm'
 import SectionAcara from './sections/SectionAcara'
 import SectionBerita from './sections/SectionBerita'
 import SectionGaleri from './sections/SectionGaleri'
 import SectionLokasi from './sections/SectionLokasi'
-import { useSanityData } from './hooks/useSanityData'
-import { getDaftarUmkm, getDaftarAcara, getDaftarBerita } from './lib/sanityClient'
-import { daftarUmkm, daftarAcara, daftarBerita } from './data/siteData'
 
 // Daftar nav links + id section yang terkait — urutan mengikuti urutan section di halaman
 const navLinks = [
@@ -35,13 +38,6 @@ const navLinks = [
   { label: 'Data Geografi', href: '#lokasi' },
 ]
 
-const heroImage =
-  'https://images.unsplash.com/photo-1576076983530-d45f9c5b60b2?auto=format&fit=crop&w=1400&q=80'
-
-const heroVideoUrl = 'https://youtu.be/kcyMei5cNig?si=dirwqpA-YI4yFD-f'
-const heroVideoId = 'kcyMei5cNig'
-const heroVideoSrc = `https://www.youtube-nocookie.com/embed/${heroVideoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${heroVideoId}&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0`
-
 // Admin panel (termasuk recharts & sanity write proxy) di-lazy-load agar bundle publik tetap ringan
 const AdminPanel = lazy(() => import('./components/AdminPanel'))
 
@@ -50,10 +46,6 @@ function App() {
   const [isAdminPage, setIsAdminPage] = useState(window.location.hash === '#admin')
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-
-  const umkmList = useSanityData(getDaftarUmkm, daftarUmkm)
-  const acaraList = useSanityData(getDaftarAcara, daftarAcara)
-  const beritaList = useSanityData(getDaftarBerita, daftarBerita)
 
   // Check if accessing admin page
   useEffect(() => {
@@ -78,12 +70,59 @@ function App() {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  // Lenis — scroll halus premium menggantikan native scroll (dimatikan untuk reduced-motion).
+  // Klik pada anchor (#id) diarahkan lewat lenis.scrollTo, karena lompatan hash native akan
+  // "berebut" dengan RAF loop Lenis dan membuat scroll berhenti di posisi yang salah.
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const lenis = new Lenis({ duration: 1.1, smoothWheel: true })
+    let rafId
+    const raf = (time) => {
+      lenis.raf(time)
+      rafId = requestAnimationFrame(raf)
+    }
+    rafId = requestAnimationFrame(raf)
+
+    const handleAnchorClick = (e) => {
+      const anchor = e.target.closest('a[href^="#"]')
+      if (!anchor) return
+      const id = anchor.getAttribute('href').slice(1)
+      const target = id ? document.getElementById(id) : null
+      if (!target) return
+      e.preventDefault()
+      lenis.scrollTo(target, { offset: -90, duration: 1.2 })
+    }
+    document.addEventListener('click', handleAnchorClick)
+
+    return () => {
+      cancelAnimationFrame(rafId)
+      document.removeEventListener('click', handleAnchorClick)
+      lenis.destroy()
+    }
+  }, [])
+
   // Navbar berubah dari transparan (di atas hero) menjadi solid + blur saat discroll
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 24)
     handleScroll()
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  // Section terakhir (Data Geografi) sering tidak sempat masuk zona trigger
+  // IntersectionObserver karena tidak bisa discroll lagi setelah mentok dasar
+  // halaman — jadi nav-nya tidak pernah ke-highlight. Paksa aktif saat mentok bawah.
+  useEffect(() => {
+    const lastHref = navLinks[navLinks.length - 1].href
+    const handleBottom = () => {
+      const reachedBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4
+      if (reachedBottom) setActiveHash(lastHref)
+    }
+    handleBottom()
+    window.addEventListener('scroll', handleBottom, { passive: true })
+    return () => window.removeEventListener('scroll', handleBottom)
   }, [])
 
   useEffect(() => {
@@ -126,6 +165,8 @@ function App() {
 
   return (
     <div className="page-shell">
+      <CursorGlow />
+      <BackToTop />
 
       {/* ── NAVBAR ── */}
       <header className={`topbar${scrolled ? ' scrolled' : ''}${isMenuOpen ? ' menu-open' : ''}`}>
@@ -235,95 +276,13 @@ function App() {
 
       <main>
 
-        {/* ── HERO ── */}
-        <section className="hero-section" id="beranda" style={{ '--hero-image': `url(${heroImage})` }}>
-          <div className="hero-video-backdrop" aria-hidden="true">
-            <iframe
-              src={heroVideoSrc}
-              title="Video background Padukuhan Ngalang"
-              loading="eager"
-              allow="autoplay; encrypted-media; picture-in-picture"
-              referrerPolicy="strict-origin-when-cross-origin"
-              tabIndex="-1"
-            ></iframe>
-          </div>
-          <div className="hero-blob hero-blob-a" aria-hidden="true"></div>
-          <div className="hero-blob hero-blob-b" aria-hidden="true"></div>
-          <div className="hero-pattern" aria-hidden="true"></div>
-
-          <div className="hero-inner">
-            <Reveal className="hero-copy">
-              <h1>
-                Selamat Datang di <span className="hero-highlight">Padukuhan Ngalang</span>
-              </h1>
-              <p className="hero-subtitle">
-                Portal informasi UMKM, acara tradisional, serta kegiatan masyarakt Padukuhan Ngalang dirancang sederhana, modern, dan mudah diakses siapa saja.
-              </p>
-              <a className="hero-video-link" href={heroVideoUrl} target="_blank" rel="noreferrer">
-                Lihat video YouTube
-              </a>
-              <div className="hero-actions">
-                <a className="btn btn-primary" href="#umkm">
-                  Jelajahi UMKM <ArrowRight size={16} />
-                </a>
-                <a className="btn btn-ghost" href="#acara">
-                  Lihat Acara
-                </a>
-              </div>
-              <div className="hero-stats">
-                <div className="hero-stat">
-                  <strong>{umkmList.length}+</strong>
-                  <span>UMKM Terdaftar</span>
-                </div>
-                <div className="hero-stat">
-                  <strong>{acaraList.length}+</strong>
-                  <span>Acara &amp; Tradisi</span>
-                </div>
-                <div className="hero-stat">
-                  <strong>{beritaList.length}+</strong>
-                  <span>Berita Terbit</span>
-                </div>
-              </div>
-            </Reveal>
-
-            <Reveal className="hero-visual" delay={0.15} y={40}>
-              <div className="hero-photo-frame">
-                <img src={heroImage} alt="Panorama pedesaan Dusun Ngalang" loading="eager" />
-              </div>
-              <motion.div
-                className="hero-float-card hero-float-card-a"
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
-              >
-                <span className="hero-float-icon">
-                  <MapPin size={16} />
-                </span>
-                <div>
-                  <strong>Balai Desa Ngalang</strong>
-                  <span>Gedangsari, Gunungkidul</span>
-                </div>
-              </motion.div>
-              <motion.div
-                className="hero-float-card hero-float-card-b"
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.7 }}
-              >
-                <span className="hero-float-icon">
-                  <Store size={16} />
-                </span>
-                <div>
-                  <strong>{umkmList.length}+ UMKM Aktif</strong>
-                  <span>Kuliner, kerajinan &amp; lainnya</span>
-                </div>
-              </motion.div>
-            </Reveal>
-          </div>
-        </section>
+        <SectionHero />
 
         {/* ── SECTIONS ── */}
+        <SectionProfilDesa />
         <SectionTentang />
+        <SectionFiturDesa />
+        <SectionOverview />
         <SectionUmkm />
         <SectionAcara />
         <SectionBerita />
@@ -334,10 +293,12 @@ function App() {
 
       {/* ── FOOTER ── */}
       <footer className="site-footer">
+        <WaveDivider color="var(--muted)" />
+
         <Reveal className="footer-grid" y={20}>
 
           {/* Brand & deskripsi */}
-          <div className="footer-brand">
+          <div className="footer-brand footer-glass">
             <div className="brand-wrap footer-brand-wrap">
               <div className="brand-mark" aria-hidden="true">
                 <Leaf size={17} strokeWidth={2.4} />
@@ -351,7 +312,7 @@ function App() {
           </div>
 
           {/* Navigasi */}
-          <div className="footer-col">
+          <div className="footer-col footer-glass">
             <h4>Halaman</h4>
             <ul className="footer-links">
               {navLinks.map((link) => (
@@ -363,18 +324,18 @@ function App() {
           </div>
 
           {/* Kontak */}
-          <div className="footer-col">
+          <div className="footer-col footer-glass">
             <h4>Kontak</h4>
             <div className="footer-contact">
               <p>Dusun Ngalang</p>
               <p>Kec. Gedangsari, Kab. Gunungkidul</p>
               <p>D.I. Yogyakarta, Indonesia</p>
-              <p><a href="mailto:info@dusunngalang.id">info@dusunngalang.id</a></p>
+              <p><a href="mailto:padukuhanngalang@gmail.com">padukuhanngalang@gmail.com</a></p>
             </div>
           </div>
 
           {/* Sosial media — belum tersedia, tombol non-aktif agar tidak mengarah ke tautan palsu */}
-          <div className="footer-col">
+          <div className="footer-col footer-glass">
             <h4>Ikuti Kami</h4>
             <div className="footer-social">
               <button type="button" className="footer-social-btn" disabled title="Segera hadir">
@@ -393,8 +354,17 @@ function App() {
         </Reveal>
         <div className="footer-bottom">
           <div className="footer-bottom-meta">
-            <p>© 2026 Dusun Ngalang. Hak cipta dilindungi.</p>
-            <p>Dibangun untuk kemajuan dusun</p>
+            <p>© {new Date().getFullYear()} Dusun Ngalang. Hak cipta dilindungi.</p>
+            <p className="footer-heart">
+              Dibangun untuk kemajuan dusun
+              <motion.span
+                animate={{ scale: [1, 1.25, 1] }}
+                transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
+                aria-hidden="true"
+              >
+                ♥
+              </motion.span>
+            </p>
           </div>
           <a className="btn-login footer-login" href="#admin" title="Admin Panel">
             <LogIn size={16} strokeWidth={2.4} />

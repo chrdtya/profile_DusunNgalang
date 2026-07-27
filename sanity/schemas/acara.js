@@ -47,5 +47,13 @@ export default {
       type: 'array',
       of: [{ type: 'string' }],
     },
+    {
+      name: 'image',
+      title: 'Gambar',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+    },
   ],
 }

@@ -27,7 +27,7 @@
 .admin-login-visual-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(11, 31, 21, 0.35), rgba(11, 31, 21, 0.92));
+  background: linear-gradient(180deg, rgba(38, 25, 16, 0.35), rgba(38, 25, 16, 0.92));
 }
 
 .admin-login-visual-content {
@@ -72,7 +72,7 @@
   align-items: center;
   justify-content: center;
   padding: 40px 24px;
-  background: var(--background, #FAF8F3);
+  background: var(--background, #FAF6EE);
 }
 
 .admin-login-card {
@@ -89,12 +89,12 @@
   font-size: 1.7rem;
   font-weight: 800;
   font-family: var(--font-heading, Georgia, serif);
-  color: var(--text-dark, #1C2A22);
+  color: var(--text-dark, #35261C);
 }
 
 .admin-login-card > p {
   margin: 0 0 28px;
-  color: var(--text-mid, #57534E);
+  color: var(--text-mid, #6F5643);
   font-size: 0.92rem;
 }
 
@@ -107,7 +107,7 @@
 .admin-login-form label {
   font-size: 0.82rem;
   font-weight: 700;
-  color: var(--text-dark, #1C2A22);
+  color: var(--text-dark, #35261C);
   margin-bottom: 2px;
 }
 
@@ -121,18 +121,18 @@
   width: 100%;
   padding: 13px 44px 13px 14px;
   border-radius: 12px;
-  border: 1.5px solid var(--border, #E3DFD3);
-  background: var(--card-bg, #FFFFFF);
+  border: 1.5px solid var(--border, #E4D7C6);
+  background: var(--card-bg, #FFFDF9);
   font-size: 0.92rem;
   font-family: inherit;
-  color: var(--text-dark, #1C2A22);
+  color: var(--text-dark, #35261C);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .admin-password-field input:focus {
   outline: none;
-  border-color: var(--primary, #14532D);
-  box-shadow: 0 0 0 3px rgba(20, 83, 45, 0.12);
+  border-color: var(--primary, #7A4B2E);
+  box-shadow: 0 0 0 3px rgba(122, 75, 46, 0.12);
 }
 
 .admin-password-toggle {
@@ -140,7 +140,7 @@
   right: 10px;
   border: none;
   background: none;
-  color: var(--text-muted, #78716C);
+  color: var(--text-muted, #8C7764);
   cursor: pointer;
   display: grid;
   place-items: center;
@@ -166,13 +166,13 @@
   align-items: center;
   gap: 7px;
   font-size: 0.85rem;
-  color: var(--text-mid, #57534E);
+  color: var(--text-mid, #6F5643);
   cursor: pointer;
 }
 
 .admin-forgot {
   font-size: 0.82rem;
-  color: var(--emerald, #059669);
+  color: var(--emerald, #9A6A46);
   font-weight: 600;
   cursor: help;
 }
@@ -186,18 +186,53 @@
   padding: 13px;
   border-radius: 12px;
   border: none;
-  background: linear-gradient(135deg, #14532D, #059669);
+  background: var(--gradient-brand);
   color: #ffffff;
   font-weight: 700;
   font-size: 0.95rem;
   cursor: pointer;
-  box-shadow: 0 10px 24px rgba(20, 83, 45, 0.3);
+  box-shadow: 0 10px 24px rgba(122, 75, 46, 0.3);
   transition: transform 0.2s ease, filter 0.2s ease;
 }
 
 .admin-login-btn:hover {
   transform: translateY(-2px);
   filter: brightness(1.06);
+}
+
+.admin-password-modal {
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+.admin-password-modal h3 {
+  margin: 0 0 8px;
+  font-size: 1.25rem;
+  font-weight: 800;
+  font-family: var(--font-heading, Georgia, serif);
+  color: var(--text-dark, #35261C);
+}
+
+.admin-password-modal-desc {
+  margin: 0 0 22px;
+  color: var(--text-mid, #6F5643);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.admin-password-modal .admin-login-form {
+  gap: 8px;
+}
+
+.admin-password-modal .admin-password-field input {
+  padding-right: 14px;
+}
+
+.admin-password-success p {
+  margin: 0 0 18px;
+  color: var(--text-mid, #6F5643);
+  font-size: 0.92rem;
+  line-height: 1.6;
 }
 
 @media (max-width: 860px) {
@@ -214,16 +249,18 @@
    ADMIN SHELL — sidebar + topbar, with dark mode tokens
 ================================================ */
 .admin-shell {
-  --admin-bg: #FAF8F3;
-  --admin-sidebar-bg: #0B1F15;
-  --admin-card-bg: #FFFFFF;
-  --admin-border: #E3DFD3;
-  --admin-text: #1C2A22;
-  --admin-text-mid: #57534E;
-  --admin-text-muted: #78716C;
-  --admin-primary: #14532D;
-  --admin-emerald: #059669;
-  --admin-gold: #C9972E;
+  /* Palet disamakan dengan landing page (var(--primary) dkk di App.css) supaya
+     dashboard admin terasa satu produk dengan situs publik, bukan tema terpisah. */
+  --admin-bg: #FAF6EE;
+  --admin-sidebar-bg: #261910;
+  --admin-card-bg: #FFFDF9;
+  --admin-border: #E4D7C6;
+  --admin-text: #35261C;
+  --admin-text-mid: #6F5643;
+  --admin-text-muted: #8C7764;
+  --admin-primary: #7A4B2E;
+  --admin-emerald: #9A6A46;
+  --admin-gold: #C89A67;
 
   min-height: 100vh;
   display: flex;
@@ -232,13 +269,13 @@
 }
 
 .admin-shell[data-theme='dark'] {
-  --admin-bg: #10201A;
-  --admin-sidebar-bg: #0A1712;
-  --admin-card-bg: #16281F;
-  --admin-border: #24382E;
+  --admin-bg: #1C130B;
+  --admin-sidebar-bg: #150E07;
+  --admin-card-bg: #241A10;
+  --admin-border: #3A2C1D;
   --admin-text: #F1EEE5;
-  --admin-text-mid: #C7D0C8;
-  --admin-text-muted: #8FA396;
+  --admin-text-mid: #D2C3B0;
+  --admin-text-muted: #A38F78;
 }
 
 .admin-sidebar {
@@ -249,9 +286,11 @@
   display: flex;
   flex-direction: column;
   padding: 20px 16px;
-  --admin-primary: #7A4B2E;
-  --admin-emerald: #A06A49;
-  --admin-gold: #C89A67;
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 .admin-sidebar-brand {
@@ -301,7 +340,7 @@
 }
 
 .admin-nav-item.active {
-  background: linear-gradient(135deg, #14532D, #059669);
+  background: var(--gradient-brand);
   color: #ffffff;
 }
 
@@ -401,7 +440,7 @@
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #14532D, #059669);
+  background: var(--gradient-brand);
   color: #ffffff;
   display: grid;
   place-items: center;
@@ -440,7 +479,7 @@
     display: block;
     position: fixed;
     inset: 0;
-    background: rgba(11, 31, 21, 0.5);
+    background: rgba(38, 25, 16, 0.5);
     border: none;
     z-index: 55;
   }
@@ -509,14 +548,14 @@
 
 .stat-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 24px rgba(20, 40, 25, 0.1);
+  box-shadow: 0 12px 24px rgba(90, 61, 39, 0.1);
 }
 
 .stat-card-icon {
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #14532D, #059669);
+  background: var(--gradient-brand);
   color: #ffffff;
   display: grid;
   place-items: center;
@@ -684,7 +723,7 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #14532D, #059669);
+  background: var(--gradient-brand);
   color: white;
 }
 
@@ -795,7 +834,7 @@
 .form-group select:focus {
   outline: none;
   border-color: var(--admin-primary);
-  box-shadow: 0 0 0 3px rgba(20, 83, 45, 0.12);
+  box-shadow: 0 0 0 3px rgba(122, 75, 46, 0.12);
 }
 
 .image-preview {
@@ -803,7 +842,7 @@
   max-height: 200px;
   margin-top: 10px;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(20, 40, 25, 0.15);
+  box-shadow: 0 4px 10px rgba(90, 61, 39, 0.15);
 }
 
 .form-actions {
@@ -831,7 +870,7 @@
 }
 
 .item-card:hover {
-  box-shadow: 0 10px 22px rgba(20, 40, 25, 0.1);
+  box-shadow: 0 10px 22px rgba(90, 61, 39, 0.1);
   transform: translateY(-4px);
 }
 
@@ -901,7 +940,7 @@
 }
 
 .item-card-list:hover {
-  box-shadow: 0 10px 22px rgba(20, 40, 25, 0.1);
+  box-shadow: 0 10px 22px rgba(90, 61, 39, 0.1);
   border-color: var(--admin-primary);
 }
 
@@ -999,7 +1038,7 @@
 .galeri-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(11, 31, 21, 0.82);
+  background: rgba(38, 25, 16, 0.82);
   display: flex;
   flex-direction: column;
   justify-content: center;

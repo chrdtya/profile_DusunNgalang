@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import '../styles/AdminPanel.css'
+import { ADMIN_EMAIL, getCurrentPassword } from '../lib/adminAuth'
 import AdminLayout from './admin/AdminLayout'
 import DashboardHome from './admin/DashboardHome'
 import UmkmManager from './admin/UmkmManager'
@@ -9,7 +10,7 @@ import GaleriManager from './admin/GaleriManager'
 import TentangManager from './admin/TentangManager'
 
 const heroImage =
-  'https://images.unsplash.com/photo-1576076983530-d45f9c5b60b2?auto=format&fit=crop&w=1200&q=80'
+  'https://images.unsplash.com/photo-1566622246836-12802785656a?auto=format&fit=crop&w=1200&q=80'
 
 const STORAGE_KEY = 'admin-authenticated'
 
@@ -19,15 +20,18 @@ export default function AdminPanel() {
   const [isAuthenticated, setIsAuthenticated] = useState(
     () => sessionStorage.getItem(STORAGE_KEY) === '1' || localStorage.getItem(STORAGE_KEY) === '1'
   )
+  const [emailAttempt, setEmailAttempt] = useState('')
   const [passwordAttempt, setPasswordAttempt] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [rememberMe, setRememberMe] = useState(false)
   const [loginError, setLoginError] = useState(false)
-  const password = import.meta.env.VITE_ADMIN_PASSWORD
 
   const handleLogin = () => {
-    if (passwordAttempt === password) {
+    const emailMatches = emailAttempt.trim().toLowerCase() === ADMIN_EMAIL.toLowerCase()
+    const passwordMatches = passwordAttempt === getCurrentPassword()
+    if (emailMatches && passwordMatches) {
       setIsAuthenticated(true)
+      setEmailAttempt('')
       setPasswordAttempt('')
       setLoginError(false)
       const storage = rememberMe ? localStorage : sessionStorage
@@ -76,11 +80,28 @@ export default function AdminPanel() {
             <p>Masuk untuk mengelola konten Dusun Ngalang</p>
 
             <div className="admin-login-form">
+              <label htmlFor="admin-email">Email</label>
+              <div className="admin-password-field">
+                <input
+                  id="admin-email"
+                  type="email"
+                  autoComplete="username"
+                  placeholder="Masukkan email admin"
+                  value={emailAttempt}
+                  onChange={(e) => {
+                    setEmailAttempt(e.target.value)
+                    setLoginError(false)
+                  }}
+                  onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
+                />
+              </div>
+
               <label htmlFor="admin-password">Password</label>
               <div className="admin-password-field">
                 <input
                   id="admin-password"
                   type={showPassword ? 'text' : 'password'}
+                  autoComplete="current-password"
                   placeholder="Masukkan password admin"
                   value={passwordAttempt}
                   onChange={(e) => {
@@ -98,7 +119,7 @@ export default function AdminPanel() {
                   {showPassword ? 'Hide' : 'Show'}
                 </button>
               </div>
-              {loginError && <p className="admin-login-error">Password salah, silakan coba lagi.</p>}
+              {loginError && <p className="admin-login-error">Email atau password salah, silakan coba lagi.</p>}
 
               <div className="admin-login-row">
                 <label className="admin-checkbox">

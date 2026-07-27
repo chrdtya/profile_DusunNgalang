@@ -293,7 +293,7 @@ Project ini dibuat untuk komunitas Dusun Ngalang.
 
 ## 📞 Support & Contact
 
-- 📧 Email: info@dusunngalang.id
+- 📧 Email: padukuhanngalang@gmail.com
 - 📍 Lokasi: Dusun Ngalang, Gedangsari, Gunungkidul, DIY
 - 🌐 Website: https://dusunngalang.id (when deployed)
 

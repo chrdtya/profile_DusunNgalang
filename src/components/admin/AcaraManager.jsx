@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import NotificationModal from '../NotificationModal'
-import { getDaftarAcara, createDocument, updateDocument, deleteDocument } from '../../lib/sanityClient'
+import { getDaftarAcara, createDocument, updateDocument, deleteDocument, urlFor } from '../../lib/sanityClient'
+import SanityImageUpload from '../SanityImageUpload'
 import { daftarAcara } from '../../data/siteData'
 
 export default function AcaraManager({ searchQuery = '' }) {
@@ -24,6 +25,7 @@ export default function AcaraManager({ searchQuery = '' }) {
     lokasi: '',
     deskripsi: '',
     kegiatan: '',
+    image: null,
   })
 
   useEffect(() => {
@@ -70,6 +72,13 @@ export default function AcaraManager({ searchQuery = '' }) {
     setNotification((prev) => ({ ...prev, open: false }))
   }
 
+  const handleImageSelect = (imageAsset) => {
+    setFormData((prev) => ({
+      ...prev,
+      image: imageAsset,
+    }))
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -90,6 +99,7 @@ export default function AcaraManager({ searchQuery = '' }) {
           .split('\n')
           .filter((k) => k.trim())
           .map((k) => k.trim()),
+        ...(formData.image && { image: { _type: 'image', asset: formData.image } }),
       }
 
       if (editing) {
@@ -115,6 +125,7 @@ export default function AcaraManager({ searchQuery = '' }) {
         lokasi: '',
         deskripsi: '',
         kegiatan: '',
+        image: null,
       })
       setEditing(null)
       setShowForm(false)
@@ -134,6 +145,7 @@ export default function AcaraManager({ searchQuery = '' }) {
       lokasi: item.lokasi,
       deskripsi: item.deskripsi,
       kegiatan: item.kegiatan ? item.kegiatan.join('\n') : '',
+      image: item.image || null,
     })
     setEditing(item)
     setShowForm(true)
@@ -164,6 +176,7 @@ export default function AcaraManager({ searchQuery = '' }) {
       lokasi: '',
       deskripsi: '',
       kegiatan: '',
+      image: null,
     })
   }
 
@@ -252,6 +265,14 @@ export default function AcaraManager({ searchQuery = '' }) {
           </div>
 
           <div className="form-group">
+            <label>Gambar Acara</label>
+            <SanityImageUpload onImageSelect={handleImageSelect} />
+            {formData.image && (
+              <img src={urlFor(formData.image)} alt="Preview" className="image-preview" />
+            )}
+          </div>
+
+          <div className="form-group">
             <label>Kegiatan (satu per baris)</label>
             <textarea
               name="kegiatan"
@@ -294,6 +315,9 @@ export default function AcaraManager({ searchQuery = '' }) {
         <div className="items-list">
           {filteredAcaraList.map((item) => (
             <div key={item._id} className="item-card-list">
+              {item.image && (
+                <img src={urlFor(item.image)} alt={item.judul} className="item-image" />
+              )}
               <div className="item-content">
                 <h3>{item.judul}</h3>
                 <p className="category">{item.kategori}</p>

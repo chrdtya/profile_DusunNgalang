@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Moon, Sun } from 'lucide-react'
+import { KeyRound, Moon, Sun } from 'lucide-react'
+import ChangePasswordModal from './ChangePasswordModal'
 const navItems = [
   { key: 'dashboard', label: 'Dashboard' },
   { key: 'umkm', label: 'UMKM' },
@@ -18,6 +19,7 @@ export default function AdminLayout({
   children,
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [passwordModalOpen, setPasswordModalOpen] = useState(false)
   const [darkMode, setDarkMode] = useState(
     () => localStorage.getItem('admin-theme') === 'dark'
   )
@@ -99,6 +101,14 @@ export default function AdminLayout({
           <div className="admin-topbar-actions">
             <button
               className="admin-icon-btn"
+              onClick={() => setPasswordModalOpen(true)}
+              aria-label="Ganti password"
+              title="Ganti password"
+            >
+              <KeyRound size={17} />
+            </button>
+            <button
+              className="admin-icon-btn"
               onClick={() => setDarkMode((d) => !d)}
               aria-label="Ganti tema"
               title="Ganti tema"
@@ -111,6 +121,8 @@ export default function AdminLayout({
 
         <main className="admin-content-area">{children}</main>
       </div>
+
+      <ChangePasswordModal open={passwordModalOpen} onClose={() => setPasswordModalOpen(false)} />
     </div>
   )
 }
