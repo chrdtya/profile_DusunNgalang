@@ -8,7 +8,6 @@ import CursorGlow from './components/motion/CursorGlow'
 import BackToTop from './components/motion/BackToTop'
 import WaveDivider from './components/motion/WaveDivider'
 import SectionHero from './sections/SectionHero'
-import SectionProfilDesa from './sections/SectionProfilDesa'
 import SectionTentang from './sections/SectionTentang'
 import SectionFiturDesa from './sections/SectionFiturDesa'
 import SectionUmkm from './sections/SectionUmkm'
@@ -269,7 +268,6 @@ function App() {
         <SectionHero />
 
         {/* ── SECTIONS ── */}
-        <SectionProfilDesa />
         <SectionTentang />
         <SectionFiturDesa />
         <SectionUmkm />

@@ -23,7 +23,6 @@ export default function UmkmManager({ searchQuery = '' }) {
     category: '',
     description: '',
     address: '',
-    rating: '',
     image: null,
   })
 
@@ -93,7 +92,6 @@ export default function UmkmManager({ searchQuery = '' }) {
         category: formData.category,
         description: formData.description,
         address: formData.address,
-        ...(formData.rating && { rating: Number(formData.rating) }),
         ...(formData.image && { image: { _type: 'image', asset: formData.image } }),
       }
 
@@ -110,7 +108,6 @@ export default function UmkmManager({ searchQuery = '' }) {
         category: '',
         description: '',
         address: '',
-        rating: '',
         image: null,
       })
       setEditing(null)
@@ -129,7 +126,6 @@ export default function UmkmManager({ searchQuery = '' }) {
       category: item.category,
       description: item.description,
       address: item.address || '',
-      rating: item.rating || '',
       image: item.image,
     })
     setEditing(item)
@@ -159,7 +155,6 @@ export default function UmkmManager({ searchQuery = '' }) {
       category: '',
       description: '',
       address: '',
-      rating: '',
       image: null,
     })
   }
@@ -238,20 +233,6 @@ export default function UmkmManager({ searchQuery = '' }) {
               onChange={handleInputChange}
               placeholder="Masukkan alamat atau lokasi"
               required
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Rating (1-5, opsional)</label>
-            <input
-              type="number"
-              name="rating"
-              min="1"
-              max="5"
-              step="0.1"
-              value={formData.rating}
-              onChange={handleInputChange}
-              placeholder="Contoh: 4.5"
             />
           </div>
 
