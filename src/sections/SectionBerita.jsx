@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Calendar, User, Clock, ArrowUpRight } from 'lucide-react'
+import { Calendar, Clock, ArrowUpRight } from 'lucide-react'
 import { daftarBerita } from '../data/siteData'
 import { getDaftarBerita, urlFor } from '../lib/sanityClient'
 import { useSanityData } from '../hooks/useSanityData'
@@ -24,7 +24,6 @@ function resolveImage(item) {
 export default function SectionBerita() {
   const items = useSanityData(getDaftarBerita, daftarBerita)
   const [detail, setDetail] = useState(null)
-  const [featured, ...rest] = items
 
   return (
     <section className="berita-section" id="berita">
@@ -37,38 +36,9 @@ export default function SectionBerita() {
         </p>
       </Reveal>
 
-      {featured && (
-        <Reveal className="berita-featured" y={22}>
-          <div className="berita-featured-media">
-            <img src={resolveImage(featured)} alt={featured.judul || featured.title} loading="lazy" />
-            {featured.kategori && <span className="berita-badge">{featured.kategori}</span>}
-          </div>
-          <div className="berita-featured-body">
-            <div className="berita-meta-row">
-              <span><Calendar size={12} /> {formatTanggal(featured.tanggalPublikasi || featured.date)}</span>
-              <span><Clock size={12} /> {readingTime(featured.konten || featured.excerpt)} min baca</span>
-            </div>
-            <h3>{featured.judul || featured.title}</h3>
-            <p>{featured.konten || featured.excerpt}</p>
-            <div className="berita-footer-row">
-              {featured.penulis && (
-                <span className="berita-author"><User size={12} /> {featured.penulis}</span>
-              )}
-              <button
-                type="button"
-                className="service-link service-link-btn berita-featured-link"
-                onClick={() => setDetail(featured)}
-              >
-                Baca selengkapnya <ArrowUpRight size={15} />
-              </button>
-            </div>
-          </div>
-        </Reveal>
-      )}
-
-      {rest.length > 0 && (
+      {items.length > 0 && (
         <Reveal className="berita-list" y={20}>
-          {rest.map((item, index) => {
+          {items.map((item, index) => {
             const content = item.konten || item.excerpt || ''
             const imageSrc = resolveImage(item)
 
@@ -110,7 +80,7 @@ export default function SectionBerita() {
             <h3 id="berita-detail-title">{detail.judul || detail.title}</h3>
             <div className="berita-meta-row">
               <span><Calendar size={12} /> {formatTanggal(detail.tanggalPublikasi || detail.date)}</span>
-              {detail.penulis && <span><User size={12} /> {detail.penulis}</span>}
+              {detail.penulis && <span>{detail.penulis}</span>}
             </div>
             <p className="berita-detail-content">{detail.konten || detail.excerpt}</p>
           </div>

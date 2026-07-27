@@ -1773,66 +1773,10 @@ h1, h2, h3, h4 {
   background: var(--muted);
 }
 
-/* Artikel unggulan bergaya majalah */
-.berita-featured {
-  max-width: 1280px;
-  margin: 48px auto 0;
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 36px;
-  align-items: center;
-  padding-bottom: 40px;
-  border-bottom: 1px solid var(--border);
-}
-
-.berita-featured-media {
-  position: relative;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  aspect-ratio: 16 / 9;
-  max-height: 280px;
-  box-shadow: var(--shadow-lift);
-}
-
-.berita-featured-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.5s ease;
-}
-
-.berita-featured-media:hover img {
-  transform: scale(1.05);
-}
-
-.berita-featured-body h3 {
-  margin: 10px 0 12px;
-  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
-  color: var(--text-dark);
-  line-height: 1.3;
-}
-
-.berita-featured-body p {
-  color: var(--text-mid);
-  line-height: 1.7;
-  font-size: 0.98rem;
-}
-
-.berita-featured-link {
-  font-size: 0.95rem;
-}
-
-@media (max-width: 860px) {
-  .berita-featured {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Daftar berita lainnya — layout editorial baris horizontal, lebih ringkas dari grid kartu */
+/* Daftar berita — layout editorial baris horizontal, konsisten untuk semua item */
 .berita-list {
   max-width: 960px;
-  margin: 40px auto 0;
+  margin: 48px auto 0;
   border-top: 1px solid var(--border);
 }
 
@@ -1981,25 +1925,6 @@ h1, h2, h3, h4 {
   .berita-row-body p {
     display: none;
   }
-}
-
-.berita-footer-row {
-  margin-top: 16px;
-  padding-top: 14px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.berita-author {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  color: var(--text-muted);
-  font-size: 0.8rem;
 }
 
 .berita-detail-content {
