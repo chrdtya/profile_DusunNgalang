@@ -59,7 +59,6 @@ export default function SectionTentang() {
   return (
     <section className="tentang-section mesh-gradient-bg" id="tentang-dusun">
       <Reveal className="section-header">
-        <span className="section-kicker">Cerita Dusun</span>
         <h2>Mengenal Dusun Ngalang</h2>
         <p>
           Sebuah perjalanan singkat mengenal lokasi, alam, mata pencaharian, dan

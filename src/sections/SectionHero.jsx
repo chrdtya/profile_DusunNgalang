@@ -164,15 +164,6 @@ export default function SectionHero() {
           </motion.div>
         </Reveal>
       </motion.div>
-
-      <motion.div
-        className="hero-scroll-cue"
-        animate={{ y: [0, 8, 0] }}
-        transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-        aria-hidden="true"
-      >
-        <span></span>
-      </motion.div>
     </section>
   )
 }

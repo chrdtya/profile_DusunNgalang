@@ -1,16 +1,7 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import Lenis from 'lenis'
-import {
-  Leaf,
-  LogIn,
-  Menu,
-  X,
-  ArrowRight,
-  Camera,
-  Users,
-  MessageCircle,
-} from 'lucide-react'
+import { Leaf, LogIn, Menu, X, ArrowRight } from 'lucide-react'
 import './App.css'
 import Reveal from './components/motion/Reveal'
 import CursorGlow from './components/motion/CursorGlow'
@@ -330,23 +321,6 @@ function App() {
               <p>D.I. Yogyakarta, Indonesia</p>
               <p><a href="mailto:padukuhanngalang@gmail.com">padukuhanngalang@gmail.com</a></p>
             </div>
-          </div>
-
-          {/* Sosial media — belum tersedia, tombol non-aktif agar tidak mengarah ke tautan palsu */}
-          <div className="footer-col footer-glass">
-            <h4>Ikuti Kami</h4>
-            <div className="footer-social">
-              <button type="button" className="footer-social-btn" disabled title="Segera hadir">
-                <Camera size={17} />
-              </button>
-              <button type="button" className="footer-social-btn" disabled title="Segera hadir">
-                <Users size={17} />
-              </button>
-              <button type="button" className="footer-social-btn" disabled title="Segera hadir">
-                <MessageCircle size={17} />
-              </button>
-            </div>
-            <p className="footer-social-note">Kanal media sosial resmi segera hadir</p>
           </div>
 
         </Reveal>
