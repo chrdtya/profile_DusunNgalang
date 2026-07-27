@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useState } from 'react'
-import { motion } from 'framer-motion'
-import { MapPin, Clock, ListChecks, ArrowUpRight, CalendarDays } from 'lucide-react'
+import { useMemo, useState } from 'react'
+import { MapPin, Clock, ArrowUpRight } from 'lucide-react'
 import { daftarAcara } from '../data/siteData'
 import { getDaftarAcara, urlFor } from '../lib/sanityClient'
 import { useSanityData } from '../hooks/useSanityData'
@@ -43,33 +42,6 @@ function getCountdownLabel(date) {
   return null
 }
 
-// Countdown presisi (hari/jam/menit/detik) khusus acara unggulan — di-update tiap detik.
-function useCountdown(targetDate) {
-  const [remaining, setRemaining] = useState(null)
-
-  useEffect(() => {
-    if (!targetDate) return
-    const tick = () => {
-      const diff = targetDate.getTime() - Date.now()
-      if (diff <= 0) {
-        setRemaining({ days: 0, hours: 0, minutes: 0, seconds: 0 })
-        return
-      }
-      setRemaining({
-        days: Math.floor(diff / 86400000),
-        hours: Math.floor((diff / 3600000) % 24),
-        minutes: Math.floor((diff / 60000) % 60),
-        seconds: Math.floor((diff / 1000) % 60),
-      })
-    }
-    tick()
-    const id = setInterval(tick, 1000)
-    return () => clearInterval(id)
-  }, [targetDate])
-
-  return remaining
-}
-
 export default function SectionAcara() {
   const items = useSanityData(getDaftarAcara, daftarAcara)
   const [detail, setDetail] = useState(null)
@@ -84,29 +56,6 @@ export default function SectionAcara() {
     })
   }, [items])
 
-  const today = useMemo(() => {
-    const d = new Date()
-    d.setHours(0, 0, 0, 0)
-    return d
-  }, [])
-
-  const featured = useMemo(() => {
-    return sorted.find((acara) => {
-      const d = parseTanggal(acara.tanggal)
-      return d && d >= today
-    }) || sorted[0]
-  }, [sorted, today])
-
-  const others = sorted.filter((acara) => acara !== featured)
-  // Memoized by the raw date string, bukan objek Date, supaya referensinya stabil antar
-  // render — Date baru di setiap render akan membuat dependency useEffect di useCountdown
-  // berubah terus dan memicu infinite update loop.
-  const featuredDate = useMemo(
-    () => (featured ? parseTanggal(featured.tanggal) : null),
-    [featured]
-  )
-  const countdown = useCountdown(featuredDate)
-
   return (
     <section className="acara-section" id="acara">
       <Reveal className="section-header">
@@ -115,58 +64,9 @@ export default function SectionAcara() {
         <p>Jangan lewatkan acara dan kegiatan menarik di Dusun Ngalang</p>
       </Reveal>
 
-      {featured && (
-        <Reveal className="acara-featured" y={24}>
-          <div className="acara-featured-media">
-            <img src={resolveImage(featured)} alt={featured.judul} loading="lazy" />
-            <div className="acara-featured-overlay" aria-hidden="true"></div>
-            <span className="acara-badge acara-featured-badge">{featured.kategori}</span>
-          </div>
-          <div className="acara-featured-body">
-            <span className="acara-featured-kicker">
-              <CalendarDays size={14} /> Acara Unggulan
-            </span>
-            <h3>{featured.judul}</h3>
-            <div className="acara-meta">
-              <span><MapPin size={14} /> {featured.lokasi}</span>
-              <span><Clock size={14} /> {featured.tanggal}</span>
-            </div>
-            <p className="acara-desc acara-featured-desc">{featured.deskripsi}</p>
-
-            {countdown && (
-              <div className="acara-countdown-timer">
-                {[
-                  { label: 'Hari', value: countdown.days },
-                  { label: 'Jam', value: countdown.hours },
-                  { label: 'Menit', value: countdown.minutes },
-                  { label: 'Detik', value: countdown.seconds },
-                ].map((unit) => (
-                  <div key={unit.label} className="acara-countdown-unit">
-                    <motion.strong
-                      key={unit.value}
-                      initial={{ opacity: 0, y: -8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      {String(unit.value).padStart(2, '0')}
-                    </motion.strong>
-                    <span>{unit.label}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <button type="button" className="acara-detail-btn acara-featured-btn" onClick={() => setDetail(featured)}>
-              <ListChecks size={15} /> Lihat rangkaian kegiatan
-              <ArrowUpRight size={14} />
-            </button>
-          </div>
-        </Reveal>
-      )}
-
-      {others.length > 0 && (
+      {sorted.length > 0 && (
         <Reveal className="acara-grid" y={20}>
-          {others.map((acara) => {
+          {sorted.map((acara) => {
             const date = parseTanggal(acara.tanggal)
             const countdownLabel = getCountdownLabel(date)
             const imageSrc = resolveImage(acara)

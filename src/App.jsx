@@ -20,7 +20,6 @@ import SectionHero from './sections/SectionHero'
 import SectionProfilDesa from './sections/SectionProfilDesa'
 import SectionTentang from './sections/SectionTentang'
 import SectionFiturDesa from './sections/SectionFiturDesa'
-import SectionOverview from './sections/SectionOverview'
 import SectionUmkm from './sections/SectionUmkm'
 import SectionAcara from './sections/SectionAcara'
 import SectionBerita from './sections/SectionBerita'
@@ -282,7 +281,6 @@ function App() {
         <SectionProfilDesa />
         <SectionTentang />
         <SectionFiturDesa />
-        <SectionOverview />
         <SectionUmkm />
         <SectionAcara />
         <SectionBerita />

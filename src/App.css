@@ -38,6 +38,15 @@
    window.scrollTo() calls and was the main cause of scrolling feeling heavy/janky. */
 html {
   scroll-behavior: auto;
+  overflow-x: hidden;
+}
+
+/* Beberapa elemen dekoratif (iframe video hero yang sengaja dibesarkan untuk efek
+   cover, drawer nav mobile yang diposisikan di luar layar saat tertutup) melebihi
+   lebar viewport by design — overflow-x:hidden di sini mencegah itu membuat halaman
+   bisa discroll horizontal, tanpa memotong konten yang seharusnya terlihat. */
+body {
+  overflow-x: hidden;
 }
 
 section[id] {
@@ -1191,167 +1200,6 @@ h1, h2, h3, h4 {
 }
 
 /* ================================================
-   OVERVIEW — interactive hub-and-spoke diagram
-================================================ */
-.overview-section {
-  padding: 96px 24px;
-  background: var(--background);
-}
-
-.overview-layout {
-  max-width: 1100px;
-  margin: 48px auto 0;
-  display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  gap: 40px;
-  align-items: center;
-}
-
-.overview-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.overview-list-item {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 14px 18px;
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  background: var(--card-bg);
-  cursor: pointer;
-  text-align: left;
-  transition: transform 0.25s var(--ease-premium), border-color 0.25s ease, background 0.25s ease;
-}
-
-.overview-list-item strong {
-  display: block;
-  color: var(--text-dark);
-  font-size: 0.98rem;
-}
-
-.overview-list-item em {
-  display: block;
-  font-style: normal;
-  color: var(--text-muted);
-  font-size: 0.8rem;
-  margin-top: 2px;
-}
-
-.overview-list-icon {
-  flex-shrink: 0;
-  display: inline-grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
-  background: var(--muted);
-  color: var(--primary);
-  transition: background 0.25s ease, color 0.25s ease;
-}
-
-.overview-list-item.active {
-  transform: translateX(6px);
-  border-color: var(--gold);
-  background: var(--card-bg);
-  box-shadow: var(--shadow-soft);
-}
-
-.overview-list-item.active .overview-list-icon {
-  background: var(--gradient-brand);
-  color: #ffffff;
-}
-
-.overview-diagram {
-  position: relative;
-  aspect-ratio: 1 / 1;
-  max-width: 420px;
-  margin: 0 auto;
-  width: 100%;
-}
-
-.overview-svg {
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-.overview-line {
-  stroke: var(--border);
-  stroke-width: 1.5;
-  transition: stroke 0.3s ease, stroke-width 0.3s ease;
-}
-
-.overview-line.active {
-  stroke: var(--gold);
-  stroke-width: 2.5;
-  stroke-dasharray: 6 5;
-  animation: overviewDash 1s linear infinite;
-}
-
-@keyframes overviewDash {
-  to { stroke-dashoffset: -22; }
-}
-
-.overview-hub {
-  fill: var(--card-bg);
-  stroke: var(--primary);
-  stroke-width: 2;
-}
-
-.overview-hub-text {
-  font-family: var(--font-heading);
-  font-size: 15px;
-  fill: var(--text-dark);
-}
-
-.overview-node-circle {
-  fill: var(--card-bg);
-  stroke: var(--border);
-  stroke-width: 1.5;
-  transition: fill 0.3s ease, stroke 0.3s ease;
-}
-
-.overview-node.active .overview-node-circle {
-  fill: rgba(200, 154, 103, 0.15);
-  stroke: var(--gold);
-}
-
-.overview-node-icon {
-  position: absolute;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  display: grid;
-  place-items: center;
-  background: var(--card-bg);
-  border: 1.5px solid var(--border);
-  color: var(--primary);
-  pointer-events: none;
-  transition: transform 0.3s var(--ease-premium), background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.overview-node-icon.active {
-  transform: translate(-50%, -50%) scale(1.15);
-  background: var(--gradient-brand);
-  color: #ffffff;
-  box-shadow: 0 0 0 6px rgba(200, 154, 103, 0.2);
-}
-
-@media (max-width: 900px) {
-  .overview-layout {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ================================================
    UMKM — marketplace cards
 ================================================ */
 .umkm-section {
@@ -1681,127 +1529,6 @@ h1, h2, h3, h4 {
 .acara-section {
   padding: 96px 24px;
   background: var(--background);
-}
-
-/* Kartu besar untuk acara terdekat/unggulan */
-.acara-featured {
-  max-width: 1120px;
-  margin: 48px auto 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  background: var(--card-bg);
-  box-shadow: var(--shadow-lift);
-}
-
-.acara-featured-media {
-  position: relative;
-  min-height: 320px;
-}
-
-.acara-featured-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.acara-featured-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(38, 25, 16, 0) 40%, rgba(38, 25, 16, 0.55));
-}
-
-.acara-featured-badge {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-}
-
-.acara-featured-body {
-  padding: 40px;
-  display: flex;
-  flex-direction: column;
-}
-
-.acara-featured-kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  width: fit-content;
-  padding: 6px 14px;
-  border-radius: 999px;
-  background: var(--muted);
-  color: var(--primary);
-  font-size: 0.74rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-bottom: 14px;
-}
-
-.acara-featured-body h3 {
-  margin: 0 0 14px;
-  font-size: 1.7rem;
-  color: var(--text-dark);
-  line-height: 1.25;
-}
-
-.acara-featured-desc {
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  font-size: 0.95rem;
-}
-
-.acara-countdown-timer {
-  display: flex;
-  gap: 14px;
-  margin: 22px 0 26px;
-}
-
-.acara-countdown-unit {
-  flex: 1;
-  text-align: center;
-  padding: 12px 6px;
-  border-radius: 14px;
-  background: var(--muted);
-}
-
-.acara-countdown-unit strong {
-  display: block;
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: var(--primary);
-  overflow: hidden;
-}
-
-.acara-countdown-unit span {
-  display: block;
-  margin-top: 2px;
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.acara-featured-btn {
-  margin-top: auto;
-  width: fit-content;
-}
-
-@media (max-width: 860px) {
-  .acara-featured {
-    grid-template-columns: 1fr;
-  }
-
-  .acara-featured-media {
-    min-height: 220px;
-  }
-
-  .acara-countdown-timer {
-    gap: 8px;
-  }
 }
 
 .acara-grid {
@@ -2821,60 +2548,6 @@ h1, h2, h3, h4 {
   margin-bottom: 40px;
 }
 
-.geo-infographic {
-  max-width: 1280px;
-  margin: 0 auto 40px;
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.geo-infographic-tile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 8px;
-  padding: 22px 14px;
-  border-radius: var(--radius-md);
-  background: var(--card-bg);
-  box-shadow: var(--shadow-soft);
-}
-
-.geo-infographic-icon {
-  display: inline-grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: var(--gradient-brand);
-  color: #ffffff;
-}
-
-.geo-infographic-tile strong {
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: var(--primary);
-}
-
-.geo-infographic-label {
-  font-size: 0.74rem;
-  color: var(--text-muted);
-  font-weight: 600;
-}
-
-@media (max-width: 1100px) {
-  .geo-infographic {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 560px) {
-  .geo-infographic {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
 .geo-layout {
   max-width: 1280px;
   margin: 0 auto;
@@ -3262,6 +2935,16 @@ h1, h2, h3, h4 {
   .tentang-timeline-track,
   .tentang-node {
     display: none;
+  }
+
+  /* Reset kolom eksplisit dari layout zigzag desktop supaya media & copy
+     benar-benar bertumpuk dalam satu kolom, bukan bikin kolom implisit baru. */
+  .tentang-row-media,
+  .tentang-row.reversed .tentang-row-media,
+  .tentang-row-copy,
+  .tentang-row.reversed .tentang-row-copy {
+    grid-column: 1;
+    grid-row: auto;
   }
 
   .tentang-row.reversed .tentang-row-media {
