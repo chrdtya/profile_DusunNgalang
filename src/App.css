@@ -36,17 +36,22 @@
 /* scroll-behavior stays "auto" — Lenis owns all smoothing (wheel scroll + anchor
    clicks via lenis.scrollTo). CSS smooth-scroll would fight Lenis's own RAF-driven
    window.scrollTo() calls and was the main cause of scrolling feeling heavy/janky. */
+/* overflow-x: hidden (bukan clip) di html/body diam-diam membuat browser
+   memaksa overflow-y jadi 'auto' (spec: satu axis 'visible' + satu bukan →
+   yang 'visible' dikoreksi jadi 'auto'), yang menjadikan body scroll container
+   sendiri dan MEMATIKAN position:sticky untuk semua descendant (termasuk
+   sidebar admin). `clip` mencegah scroll horizontal tanpa efek samping itu. */
 html {
   scroll-behavior: auto;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* Beberapa elemen dekoratif (iframe video hero yang sengaja dibesarkan untuk efek
    cover, drawer nav mobile yang diposisikan di luar layar saat tertutup) melebihi
-   lebar viewport by design — overflow-x:hidden di sini mencegah itu membuat halaman
+   lebar viewport by design — overflow-x di sini mencegah itu membuat halaman
    bisa discroll horizontal, tanpa memotong konten yang seharusnya terlihat. */
 body {
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 section[id] {
