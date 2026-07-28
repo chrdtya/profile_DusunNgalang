@@ -15,5 +15,13 @@ export default {
       type: 'text',
       validation: (Rule) => Rule.required(),
     },
+    {
+      name: 'image',
+      title: 'Gambar',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+    },
   ],
 }

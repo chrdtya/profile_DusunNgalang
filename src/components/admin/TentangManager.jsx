@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import NotificationModal from '../NotificationModal'
-import { getTentangDusun, createDocument, updateDocument, deleteDocument } from '../../lib/sanityClient'
+import { getTentangDusun, createDocument, updateDocument, deleteDocument, urlFor } from '../../lib/sanityClient'
+import SanityImageUpload from '../SanityImageUpload'
 import { tentangDusun } from '../../data/siteData'
 
 export default function TentangManager({ searchQuery = '' }) {
@@ -20,6 +21,7 @@ export default function TentangManager({ searchQuery = '' }) {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
+    image: null,
   })
 
   useEffect(() => {
@@ -66,6 +68,13 @@ export default function TentangManager({ searchQuery = '' }) {
     setNotification((prev) => ({ ...prev, open: false }))
   }
 
+  const handleImageSelect = (imageAsset) => {
+    setFormData((prev) => ({
+      ...prev,
+      image: imageAsset,
+    }))
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -79,6 +88,7 @@ export default function TentangManager({ searchQuery = '' }) {
       const dataToSave = {
         title: formData.title,
         description: formData.description,
+        ...(formData.image && { image: { _type: 'image', asset: formData.image } }),
       }
 
       if (editing) {
@@ -92,6 +102,7 @@ export default function TentangManager({ searchQuery = '' }) {
       setFormData({
         title: '',
         description: '',
+        image: null,
       })
       setEditing(null)
       setShowForm(false)
@@ -107,6 +118,7 @@ export default function TentangManager({ searchQuery = '' }) {
     setFormData({
       title: item.title,
       description: item.description,
+      image: item.image || null,
     })
     setEditing(item)
     setShowForm(true)
@@ -133,6 +145,7 @@ export default function TentangManager({ searchQuery = '' }) {
     setFormData({
       title: '',
       description: '',
+      image: null,
     })
   }
 
@@ -181,6 +194,14 @@ export default function TentangManager({ searchQuery = '' }) {
             ></textarea>
           </div>
 
+          <div className="form-group">
+            <label>Gambar</label>
+            <SanityImageUpload onImageSelect={handleImageSelect} />
+            {formData.image && (
+              <img src={urlFor(formData.image)} alt="Preview" className="image-preview" />
+            )}
+          </div>
+
           <div className="form-actions">
             <button type="submit" className="btn-primary" disabled={loading}>
               {editing ? 'Update' : 'Simpan'}
@@ -213,6 +234,9 @@ export default function TentangManager({ searchQuery = '' }) {
         <div className="items-list">
           {filteredTentangList.map((item) => (
             <div key={item._id} className="item-card-list">
+              {item.image && (
+                <img src={urlFor(item.image)} alt={item.title} className="thumbnail" />
+              )}
               <div className="item-content">
                 <h3>{item.title}</h3>
                 <p className="description">{item.description}</p>

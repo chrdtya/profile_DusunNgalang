@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { MapPin, Mountain, Wheat, Landmark, ArrowRight } from 'lucide-react'
 import { tentangDusun } from '../data/siteData'
-import { getTentangDusun } from '../lib/sanityClient'
+import { getTentangDusun, urlFor } from '../lib/sanityClient'
 import { useSanityData } from '../hooks/useSanityData'
 import Reveal from '../components/motion/Reveal'
 
@@ -75,6 +75,7 @@ export default function SectionTentang() {
           const meta = resolveTopicMeta(item.title)
           const Icon = meta.icon
           const reversed = index % 2 === 1
+          const image = (item.image && urlFor(item.image)) || meta.image
 
           return (
             <Reveal
@@ -95,7 +96,7 @@ export default function SectionTentang() {
 
               <div className="tentang-row-media">
                 <span className="tentang-row-shape" aria-hidden="true"></span>
-                <img src={meta.image} alt={item.title} loading="lazy" />
+                <img src={image} alt={item.title} loading="lazy" />
               </div>
               <div className="tentang-row-copy">
                 <span className="tentang-row-icon">

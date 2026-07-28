@@ -101,7 +101,7 @@ export default function SectionHero() {
           </h1>
           <p className="hero-subtitle">
             Portal informasi budaya, UMKM, wisata, dan kehidupan masyarakat Padukuhan
-            Ngalang — dirancang sederhana, modern, dan mudah diakses siapa saja.
+            Ngalang dirancang sederhana, modern, dan mudah diakses siapa saja.
           </p>
           <a className="hero-video-link" href={heroVideoUrl} target="_blank" rel="noreferrer">
             <PlayCircle size={16} /> Lihat video YouTube
