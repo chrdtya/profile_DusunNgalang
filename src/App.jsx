@@ -9,7 +9,6 @@ import BackToTop from './components/motion/BackToTop'
 import WaveDivider from './components/motion/WaveDivider'
 import SectionHero from './sections/SectionHero'
 import SectionTentang from './sections/SectionTentang'
-import SectionFiturDesa from './sections/SectionFiturDesa'
 import SectionUmkm from './sections/SectionUmkm'
 import SectionAcara from './sections/SectionAcara'
 import SectionBerita from './sections/SectionBerita'
@@ -269,7 +268,6 @@ function App() {
 
         {/* ── SECTIONS ── */}
         <SectionTentang />
-        <SectionFiturDesa />
         <SectionUmkm />
         <SectionAcara />
         <SectionBerita />
