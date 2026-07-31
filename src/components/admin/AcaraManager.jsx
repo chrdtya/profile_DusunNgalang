@@ -316,7 +316,7 @@ export default function AcaraManager({ searchQuery = '' }) {
           {filteredAcaraList.map((item) => (
             <div key={item._id} className="item-card-list">
               {item.image && (
-                <img src={urlFor(item.image)} alt={item.judul} className="item-image" />
+                <img src={urlFor(item.image)} alt={item.judul} className="thumbnail" />
               )}
               <div className="item-content">
                 <h3>{item.judul}</h3>

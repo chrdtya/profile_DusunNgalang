@@ -952,6 +952,19 @@
   flex-shrink: 0;
 }
 
+.item-card-list .description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.item-card-list .kegiatan-list ul {
+  max-height: 130px;
+  overflow-y: auto;
+}
+
 .item-card-list .item-content {
   flex: 1;
   padding: 0;
